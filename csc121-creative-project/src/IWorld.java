@@ -4,9 +4,6 @@ import processing.event.MouseEvent;
 
 public interface IWorld {
 
-	int ballX = 400;
-	int ballY = 300;
-
 	/** produce an updated state of this world after one time tick */
 	default
 	public IWorld update() { return this; }

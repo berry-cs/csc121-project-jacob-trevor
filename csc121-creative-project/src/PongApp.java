@@ -4,7 +4,7 @@ import processing.event.*;
 /**
  * Provides the scaffolding to launch a Processing application
  */
-public class AppTemplate extends PApplet {	// <----- 1. rename AppTemplate everywhere in this file
+public class PongApp extends PApplet {	// <----- 1. rename AppTemplate everywhere in this file
     IWorld w;
     
     public void settings() {
@@ -12,7 +12,7 @@ public class AppTemplate extends PApplet {	// <----- 1. rename AppTemplate every
     }
     
     public void setup() {
-		w = new PongWorld(new paddleLeft(0, 200, 25, 50), new paddleRight(400, 200, 50, 25), new ball(400, 300, 20, 2));   	// <----- 2. create your initial world object
+		w = new PongWorld(new Paddle(0, 200, 25, 50), new Paddle(400, 200, 50, 25), new Ball(400, 300, 20, 5));   	// <----- 2. create your initial world object
     }
     
     public void draw() {
@@ -76,6 +76,6 @@ public class AppTemplate extends PApplet {	// <----- 1. rename AppTemplate every
     }
 
     public static void main(String[] args) {
-        PApplet.runSketch(new String[] { AppTemplate.class.getName() }, new AppTemplate());
+        PApplet.runSketch(new String[] { PongApp.class.getName() }, new PongApp());
     }
 }
