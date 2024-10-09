@@ -50,4 +50,9 @@ class PongWorldTest {
 		assertEquals(w1UpdatedPaddleLeftUp, w1.keyPressed(new KeyEvent(null, 0, 0, 0, 'w', 'w')));
 		assertEquals(w1UpdatedPaddleLeftDown, w1.keyPressed(new KeyEvent(null, 0, 0, 0, 's', 's')));
 	}
+	
+	@Test 
+	void ballWindowCollisions () { 
+		
+	}
 }
