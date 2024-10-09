@@ -12,7 +12,7 @@ public class PongApp extends PApplet {	// <----- 1. rename AppTemplate everywher
     }
     
     public void setup() {
-		w = new PongWorld(new Paddle(0, 200, 25, 50), new Paddle(400, 200, 50, 25), new Ball(400, 300, 20, 5));   	// <----- 2. create your initial world object
+		w = new PongWorld(new Paddle(0, 200, 25, 50), new Paddle(400, 200, 50, 25), new Ball(400, 300, 20, new Posn (5,5)));   	// <----- 2. create your initial world object
     }
     
     public void draw() {

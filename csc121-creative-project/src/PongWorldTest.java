@@ -5,10 +5,10 @@ import processing.event.KeyEvent;
 
 class PongWorldTest {
 
-	Ball b1 = new Ball(40, 50, 10, 5);
-	Ball b2 = new Ball(50, 60, 10, 5);
-	Ball b3 = new Ball(100, 200, 10, 5);
-	Ball b4 = new Ball(105, 205, 10, 5);
+	Ball b1 = new Ball(40, 50, 10, new Posn (5,5));
+	Ball b2 = new Ball(50, 60, 10, new Posn (5,5));
+	Ball b3 = new Ball(100, 200, 10, new Posn (5,5));
+	Ball b4 = new Ball(105, 205, 10, new Posn (5,5));
 	
 	Paddle paddleLeft = new Paddle(0, 225, 25, 150);
 	Paddle paddleRight = new Paddle(775, 225, 25, 150);
@@ -27,20 +27,20 @@ class PongWorldTest {
 	PongWorld w3UpdatedBall = new PongWorld(paddleLeft, paddleRight, b4);
 	
 	// Paddle p1 = ...
-	// Padele p2 == new Paddle( ... );
+	// Paddle p2 == new Paddle( ... );
 	// PongWorld w1 = new PongWorld( p1, p2, b1 );
 	
 	
 	@Test
 	void testMoveBall() {
-		assertEquals(new Ball(45, 55, 10, 5),  b1.ballMove());
-		assertEquals(new Ball(55, 65, 10, 5), b2.ballMove());
-		assertEquals(new Ball(105, 205, 10, 5), b3.ballMove());
+		assertEquals(new Ball(45, 55, 10, new Posn (5,5)),  b1.ballMove());
+		assertEquals(new Ball(55, 65, 10, new Posn (5,5)), b2.ballMove());
+		assertEquals(new Ball(105, 205, 10, new Posn (5,5)), b3.ballMove());
 	}
 	
 	@Test
 	void testupdate() {
-		assertEquals(new PongWorld(paddleLeft, paddleRight, new Ball(105, 205, 10, 5)), w3.update());
+		assertEquals(new PongWorld(paddleLeft, paddleRight, new Ball(105, 205, 10, new Posn (5,5))), w3.update());
   }
 	
 	@Test

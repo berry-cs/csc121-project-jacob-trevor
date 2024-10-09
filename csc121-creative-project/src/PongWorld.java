@@ -35,18 +35,18 @@ public class PongWorld implements IWorld {
 	public IWorld update() { 
 		return new PongWorld(this.paddleLeft, this.paddleRight, this.ball.ballMove());
 	}
-	
+
 	public PongWorld keyPressed(KeyEvent kev) {
-		if (kev.getKeyCode() == PApplet.UP) {
+		if (kev.getKeyCode() == PApplet.UP && paddleRight.y > 0 + paddleRight.height/10) {
 			return new PongWorld(this.paddleLeft, new Paddle(this.paddleRight.x, this.paddleRight.y - 10, this.paddleRight.height, this.paddleRight.width), this.ball);
 		}
-		else if (kev.getKeyCode() == PApplet.DOWN) {
+		 if (kev.getKeyCode() == PApplet.DOWN && paddleRight.y < 600 - paddleRight.height*3) {
 			return new PongWorld(this.paddleLeft, new Paddle(this.paddleRight.x, this.paddleRight.y + 10, this.paddleRight.height, this.paddleRight.width), this.ball);
 		}
-		else if (kev.getKey() == 'w') {
+		 if (kev.getKey() == 'w'&& paddleLeft.y > 0 + paddleLeft.height/10) {
 			return new PongWorld(new Paddle(this.paddleLeft.x, this.paddleLeft.y - 10, this.paddleLeft.height, this.paddleLeft.width), this.paddleRight, this.ball);
 		}
-		else if (kev.getKey() == 's') {
+		 if (kev.getKey() == 's' && paddleLeft.y < 600 - paddleLeft.height*6) {
 			return new PongWorld(new Paddle(this.paddleLeft.x, this.paddleLeft.y + 10, this.paddleLeft.height, this.paddleLeft.width), this.paddleRight, this.ball);
 		}
 		else return this;
@@ -122,9 +122,9 @@ class Ball {
 	int x;
 	int y;
 	int diameter;
-	int speed;
+	Posn speed;
 	
-	public Ball(int x, int y, int diameter, int speed) {
+	public Ball(int x, int y, int diameter, Posn speed) {
 		super();
 		this.x = x;
 		this.y = y;
@@ -132,10 +132,12 @@ class Ball {
 		this.speed = speed;
 	}
 
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(diameter, speed, x, y);
 	}
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -146,12 +148,26 @@ class Ball {
 		if (getClass() != obj.getClass())
 			return false;
 		Ball other = (Ball) obj;
-		return diameter == other.diameter && speed == other.speed && x == other.x && y == other.y;
+		return diameter == other.diameter && Objects.equals(speed, other.speed) && x == other.x && y == other.y;
+	}
+
+
+	Ball ballMove() {
+		return new Ball(this.x + speed.x, this.y + ballWindowCollisions(speed.y) , this.diameter, this.speed);
 	}
 	
-	Ball ballMove() {
-		return new Ball(this.x + speed, this.y + speed, this.diameter, this.speed);
+	int ballWindowCollisions(int num) {
+		if (this.y <= 0 + this.diameter) {  
+			return num * (-1); 
+		}
+		
+		else if (this.y >= 600 - this.diameter) {
+			return num * (-1); 
+		}
+		
+		else return num; 
 	}
+	
 
 	@Override
 	public String toString() {
@@ -159,3 +175,55 @@ class Ball {
 	}
 	
 }
+
+class Posn {
+	int x;
+	int y;
+
+	public Posn(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+
+	/**
+	 * @return the x
+	 */
+	public int getX() {
+		return x;
+	}
+
+	/**
+	 * @return the y
+	 */
+	public int getY() {
+		return y;
+	}
+	
+	int Opposite(int x) {
+		return x * (-1);
+	}
+
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(x, y);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Posn other = (Posn) obj;
+		return x == other.x && y == other.y;
+	}
+
+	@Override
+	public String toString() {
+		return "Posn [x=" + x + ", y=" + y + "]";
+	}
+
+} 
