@@ -36,7 +36,7 @@ public class PongWorld implements IWorld {
 	public IWorld update() { 
 		if (this.ball.hitPaddle(this.paddleLeft) && this.ball.speed.x < 0) {
 			return new PongWorld(this.paddleLeft, this.paddleRight, this.ball.bounceX());
-		} else if (this.ball.hitPaddle(this.paddleRight) && this.ball.speed.x > 0) {
+		} else if (this.ball.hitPaddle(this.paddleRight) && this.ball.speed.x > 0 ) {
 			return new PongWorld(this.paddleLeft, this.paddleRight, this.ball.bounceX());
 		} else {
 			return new PongWorld(this.paddleLeft, this.paddleRight, this.ball.ballMove());
@@ -130,8 +130,6 @@ class Ball {
 	int diameter;
 	Posn speed;
 	
-	
-
 
 	@Override
 	public int hashCode() {
@@ -140,9 +138,19 @@ class Ball {
 
 	
 	/** tell if this ball has hit the given paddle */
-	public boolean hitPaddle(Paddle paddle) {
-		return false;
+	public Boolean hitPaddle(Paddle paddle) {
+		
+		if (paddle.y < loc.y && 
+				 paddle.y + paddle.height > loc.y && 
+					Math.abs(loc.x - paddle.x) < 25) {
+			
+			return true;
+		}
+		
+		else return false;
 	}
+	
+	
 
 	@Override
 	public boolean equals(Object obj) {
@@ -188,9 +196,10 @@ class Ball {
 	}
 	
 	/**
-	 * flip the x value of the speed
+	 * flip the x value of the speed if hitPaddle returns true
+	 * 
 	 */
-	Ball bounceX() {
+	public Ball bounceX() { 
 		return new Ball(this.loc, this.diameter, new Posn(-speed.x,  speed.y)); 
 	}
 	
