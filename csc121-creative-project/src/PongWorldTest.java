@@ -9,6 +9,7 @@ class PongWorldTest {
 	Ball b2 = new Ball(new Posn (50, 60), 10, new Posn (5,5));
 	Ball b3 = new Ball(new Posn (100, 200), 10, new Posn (5,5));
 	Ball b4 = new Ball(new Posn (105, 205),10, new Posn (5,5));
+	Ball b5 = new Ball(new Posn(100, 5), 10, new Posn(10, -1));
 	
 	Paddle paddleLeft = new Paddle(0, 225, 25, 150);
 	Paddle paddleRight = new Paddle(775, 225, 25, 150);
@@ -25,6 +26,9 @@ class PongWorldTest {
 	PongWorld w1UpdatedPaddleLeftDown = new PongWorld(paddleLeftUpdateDown, paddleRight, b1);
 	PongWorld w1UpdatedPaddleLeftUp = new PongWorld(paddleLeftUpdateUp, paddleRight, b1);
 	PongWorld w3UpdatedBall = new PongWorld(paddleLeft, paddleRight, b4);
+	
+	Posn p1 = new Posn(5, 5);
+	Posn p2 = new Posn(10, 1);
 	
 	// Paddle p1 = ...
 	// Paddle p2 == new Paddle( ... );
@@ -52,7 +56,15 @@ class PongWorldTest {
 	}
 	
 	@Test 
-	void ballWindowCollisions () { 
-		
+	void updateSpeedDirection() { 
+		assertEquals(p1, b1.updateSpeedDirection(new Posn(5, 5)));
+		assertEquals(p2, b5.updateSpeedDirection(new Posn(10, -1)));
 	}
+	
+	@Test
+	void BounceX() {
+		// assertEquals(new Ball(new Posn(40, 50), 10, new Posn(-5, 5)), b1.ballBounce());
+	}
+	
+	
 }

@@ -35,9 +35,9 @@ public class PongWorld implements IWorld {
 	 */
 	public IWorld update() { 
 		if (this.ball.hitPaddle(this.paddleLeft) && this.ball.speed.x < 0) {
-			return new PongWorld(this.paddleLeft, this.paddleRight, this.ball.bounceX());
+			return new PongWorld(this.paddleLeft, this.paddleRight, this.ball.ballBounce());
 		} else if (this.ball.hitPaddle(this.paddleRight) && this.ball.speed.x > 0 ) {
-			return new PongWorld(this.paddleLeft, this.paddleRight, this.ball.bounceX());
+			return new PongWorld(this.paddleLeft, this.paddleRight, this.ball.ballBounce());
 		} else {
 			return new PongWorld(this.paddleLeft, this.paddleRight, this.ball.ballMove());
 		}
@@ -142,14 +142,14 @@ class Ball {
 		
 		if (paddle.y < loc.y && 
 				 paddle.y + paddle.height > loc.y && 
-					Math.abs(loc.x - paddle.x) < 25) {
-			
+					Math.abs(loc.x - paddle.x) < 25) 
+					{
+		
 			return true;
 		}
-		
+	
 		else return false;
 	}
-	
 	
 
 	@Override
@@ -179,6 +179,9 @@ class Ball {
 		return new Ball(this.loc.translate(this.speed) , this.diameter, updateSpeedDirection(this.speed));
 	}
 	
+	Ball ballBounce( ) {
+		return new Ball(this.loc.translate(this.speed), this.diameter, bounceX(this.speed));
+	}
 	
 	/** 
 	 * produces a flipped y value for the speed if it's at a top or bottom boundary
@@ -199,18 +202,15 @@ class Ball {
 	 * flip the x value of the speed if hitPaddle returns true
 	 * 
 	 */
-	public Ball bounceX() { 
-		return new Ball(this.loc, this.diameter, new Posn(-speed.x,  speed.y)); 
+	public Posn bounceX(Posn speed) { 
+		return new Posn(-speed.x,  speed.y); 
 	}
-	
 
 	@Override
 	public String toString() {
 		return "Ball [loc=" + loc + ", diameter=" + diameter + ", speed=" + speed + "]";
 	}
-	
 
-	
 }
 
 class Posn {
@@ -235,18 +235,11 @@ class Posn {
 	public int getY() {
 		return y;
 	}
-	
-	
 
     /** moves this posn by the given offsets */
     public Posn translate(Posn offset) {
         return new Posn( this.x + offset.x, this.y + offset.y );
     }
-	
-	int Opposite(int x) {
-		return x * (-1);
-	}
-
 
 	@Override
 	public int hashCode() {
