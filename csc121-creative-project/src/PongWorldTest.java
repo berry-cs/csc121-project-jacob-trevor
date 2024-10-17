@@ -22,6 +22,8 @@ class PongWorldTest {
 	Ball b10 = new Ball(new Posn(5, 226), 10, new Posn(-1, 5));  // bouncing off left paddle
 	Ball b11 = new Ball(new Posn(400, 595), 10, new Posn(4, 10));  // bouncing off bottom window
 	Ball b12 = new Ball(new Posn(770, 226), 10, new Posn(5, 10));  // bouncing off right paddle
+	Ball b13 = new Ball (new Posn (770, 370), 10, new Posn (5, 10));
+	Ball b14 = new Ball (new Posn (770, 370), 10, new Posn (5, 0)); 
 
 	// paddle examples
 	Paddle paddleLeft = new Paddle(0, 225, 25, 150);
@@ -39,6 +41,7 @@ class PongWorldTest {
 	PongWorld w3 = new PongWorld(paddleLeft, paddleRight, b3);
 	PongWorld w4 = new PongWorld(paddleLeft, paddleRight, b10);
 	PongWorld w5 = new PongWorld(paddleLeft, paddleRight, b12);
+	PongWorld w6 = new PongWorld(paddleLeft, paddleRight, b14);
 
 	// updated worlds examples
 	PongWorld w1UpdatedPaddleRightUP = new PongWorld(paddleLeft, paddleRightUpdateUp, b1);
@@ -70,8 +73,10 @@ class PongWorldTest {
 	@Test
 	void testupdate() {
 		assertEquals(new PongWorld(paddleLeft, paddleRight, new Ball(new Posn(105, 205), 10, new Posn(5,5))), w3.update());
-		assertEquals(new PongWorld(paddleLeft, paddleRight, new Ball(new Posn(4, 231), 10, new Posn(1, 5))), w4.update());  // ball bouncing off left paddle
-		assertEquals(new PongWorld(paddleLeft, paddleRight, new Ball(new Posn(775, 236), 10, new Posn(-5, 10))), w5.update());  // ball bouncing off Right paddle
+		assertEquals(new PongWorld(paddleLeft, paddleRight, new Ball(new Posn(5, 226), 10, new Posn(1, 5))), w4.update());  // ball bouncing off left paddle
+		assertEquals(new PongWorld(paddleLeft, paddleRight, new Ball(new Posn(770, 226), 10, new Posn(-5, 10))), w5.update());  // ball bouncing off Right paddle
+		assertEquals(new PongWorld(paddleLeft, paddleRight, new Ball(new Posn(770, 370), 10, new Posn(-5, 0))), w6.update());
+		
 	}
 
 	@Test
@@ -94,10 +99,14 @@ class PongWorldTest {
 
 	@Test
 	void ballBounce() {
-		assertEquals(new Ball(new Posn(45, 55), 10, new Posn(-5, 5)), b1.ballBounce());
-		assertEquals(new Ball(new Posn(110, 4), 10, new Posn(-10, -1)), b5.ballBounce());  // x flips sign
-		assertEquals(new Ball(new Posn(495, 295), 10, new Posn(5, 20)), b9.ballBounce());
-		assertEquals(new Ball(new Posn(110, 10), 10, new Posn(-10, 5)), b8.ballBounce());
+
+		assertEquals( true, b14.hitPaddleRight(paddleRight));
+		assertEquals( true, b10.hitPaddleLeft(paddleLeft));
+
+		assertEquals(new Ball(new Posn(40, 50), 10, new Posn(-5, 5)), b1.ballBounce());
+		assertEquals(new Ball(new Posn(100, 5), 10, new Posn(-10, -1)), b5.ballBounce());  // x flips sign
+		assertEquals(new Ball(new Posn(500, 275), 10, new Posn(5, 20)), b9.ballBounce());
+		assertEquals(new Ball(new Posn(100, 5), 10, new Posn(-10, 5)), b8.ballBounce());
 
 	}
 	
@@ -110,7 +119,7 @@ class PongWorldTest {
 		// getY
 		assertEquals(1, p2.getY());
 		assertEquals(-10, p3.getY());	
-		
+	
 		// translate
 		assertEquals(new Posn(15, 6), p1.translate(p2));
 		assertEquals(new Posn(20, -9), p2.translate(p3));

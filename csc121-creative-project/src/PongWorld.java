@@ -27,8 +27,8 @@ public class PongWorld implements IWorld {
 		w.background(42);
 		w.fill(255);
 		w.circle(ball.loc.getX(), ball.loc.getY(), 20);
-		w.rect(0, paddleLeft.y, 25, 150);
-		w.rect(775, paddleRight.y, 25, 150);
+		w.rect(paddleLeft.x, paddleLeft.y, paddleLeft.width, paddleLeft.height);
+		w.rect(paddleRight.x, paddleRight.y, paddleRight.width, paddleRight.height);
 		return w; 	
 	}
 
@@ -36,9 +36,9 @@ public class PongWorld implements IWorld {
 	 * represents an updated version of the PongWorld
 	 */
 	public IWorld update() { 
-		if (this.ball.hitPaddle(this.paddleLeft) && this.ball.speed.x < 0) {
+		if (this.ball.hitPaddleLeft(this.paddleLeft) && this.ball.speed.x < 0) {
 			return new PongWorld(this.paddleLeft, this.paddleRight, this.ball.ballBounce());
-		} else if (this.ball.hitPaddle(this.paddleRight) && this.ball.speed.x > 0 ) {
+		} else if (this.ball.hitPaddleRight(this.paddleRight) && this.ball.speed.x > 0 ) {
 			return new PongWorld(this.paddleLeft, this.paddleRight, this.ball.ballBounce());
 		} else {
 			return new PongWorld(this.paddleLeft, this.paddleRight, this.ball.ballMove());
@@ -49,17 +49,17 @@ public class PongWorld implements IWorld {
 	 * returns a new PongWorld where the paddles have moved based on which key has been pressed
 	 */
 	public PongWorld keyPressed(KeyEvent kev) {
-		if (kev.getKeyCode() == PApplet.UP && paddleRight.y > 0 + paddleRight.height/10) {
-			return new PongWorld(this.paddleLeft, new Paddle(this.paddleRight.x, this.paddleRight.y - 10, this.paddleRight.height, this.paddleRight.width), this.ball);
+		if (kev.getKeyCode() == PApplet.UP && paddleRight.y > 0) {
+			return new PongWorld(this.paddleLeft, new Paddle(this.paddleRight.x, this.paddleRight.y - 10, this.paddleRight.width, this.paddleRight.height), this.ball);
 		}
-		if (kev.getKeyCode() == PApplet.DOWN && paddleRight.y < 600 - paddleRight.height*3) {
-			return new PongWorld(this.paddleLeft, new Paddle(this.paddleRight.x, this.paddleRight.y + 10, this.paddleRight.height, this.paddleRight.width), this.ball);
+		if (kev.getKeyCode() == PApplet.DOWN && paddleRight.y < 600 - paddleRight.height) {
+			return new PongWorld(this.paddleLeft, new Paddle(this.paddleRight.x, this.paddleRight.y + 10, this.paddleRight.width, this.paddleRight.height), this.ball);
 		}
-		if (kev.getKey() == 'w'&& paddleLeft.y > 0 + paddleLeft.height/10) {
-			return new PongWorld(new Paddle(this.paddleLeft.x, this.paddleLeft.y - 10, this.paddleLeft.height, this.paddleLeft.width), this.paddleRight, this.ball);
+		if (kev.getKey() == 'w'&& paddleLeft.y > 0) {
+			return new PongWorld(new Paddle(this.paddleLeft.x, this.paddleLeft.y - 10, this.paddleLeft.width, this.paddleLeft.height), this.paddleRight, this.ball);
 		}
-		if (kev.getKey() == 's' && paddleLeft.y < 600 - paddleLeft.height*6) {
-			return new PongWorld(new Paddle(this.paddleLeft.x, this.paddleLeft.y + 10, this.paddleLeft.height, this.paddleLeft.width), this.paddleRight, this.ball);
+		if (kev.getKey() == 's' && paddleLeft.y < 600 - paddleLeft.height) {
+			return new PongWorld(new Paddle(this.paddleLeft.x, this.paddleLeft.y + 10, this.paddleLeft.width, this.paddleLeft.height), this.paddleRight, this.ball);
 		}
 		else return this;
 	}
@@ -98,7 +98,7 @@ class Paddle  {
 	int height;
 	int width;
 
-	public Paddle(int x, int y, int height, int width) {
+	public Paddle(int x, int y, int width, int height ) {
 		super();
 		this.x = x;
 		this.y = y;
@@ -162,14 +162,28 @@ class Ball {
 		return diameter == other.diameter && Objects.equals(loc, other.loc) && Objects.equals(speed, other.speed);
 	}
 
-	/** tell if this ball has hit the given paddle */
-	public Boolean hitPaddle(Paddle paddle) {
+	/** tell if this ball has hit the left paddle */
+	public Boolean hitPaddleLeft(Paddle paddle) {
 
 		if (paddle.y < loc.y && 
 				paddle.y + paddle.height > loc.y && 
-				Math.abs(loc.x - paddle.x) < 25) 
+				Math.abs(loc.x - paddle.x) < 40)
 		{
+			
+			return true;
+		}
 
+		else return false;
+	}
+	
+	/** tell if this ball has hit the Right paddle */
+	public Boolean hitPaddleRight(Paddle paddle) {
+
+		if (paddle.y < loc.y && 
+				paddle.y + paddle.height > loc.y && 
+				Math.abs(loc.x - paddle.x) < 11)
+		{
+			
 			return true;
 		}
 
@@ -187,7 +201,7 @@ class Ball {
 	 * updates the x value of the balls speed to bounce off of the paddles
 	 */
 	public Ball ballBounce( ) {
-		return new Ball(this.loc.translate(this.speed), this.diameter, bounceX(this.speed));
+		return new Ball(this.loc, this.diameter, bounceX(this.speed));
 	}
 
 	/**

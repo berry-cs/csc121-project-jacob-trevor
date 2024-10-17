@@ -12,7 +12,7 @@ public class StartWorld implements IWorld {
 	
 
 	public IWorld mouseClicked(MouseEvent mev) {
-		return new PongWorld(new Paddle(0, 200, 25, 50), new Paddle(400, 200, 50, 25), new Ball( new Posn(100, 300), 20, new Posn (-5,-5)));   	// <----- 2. create your initial world object
+		return new PongWorld(new Paddle(0, 200, 25, 150), new Paddle(775, 200, 25, 150), new Ball( new Posn(400, 300), 20, new Posn (-5, 5)));   	// <----- 2. create your initial world object
 	}
 }
 
