@@ -14,6 +14,7 @@ public class PongWorld implements IWorld {
 
 	Paddle paddleLeft;
 	Paddle paddleRight;
+	
 	Ball ball;
 
 	public PongWorld(Paddle paddleLeft, Paddle paddleRight, Ball ball) {
