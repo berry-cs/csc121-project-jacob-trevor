@@ -16,12 +16,14 @@ public class PongWorld implements IWorld {
 	Paddle paddleRight;
 	
 	Ball ball;
+	ScoreData score;
 
-	public PongWorld(Paddle paddleLeft, Paddle paddleRight, Ball ball) {
+	PongWorld(Paddle paddleLeft, Paddle paddleRight, Ball ball, ScoreData score) {
 		super();
 		this.paddleLeft = paddleLeft;
 		this.paddleRight = paddleRight;
 		this.ball = ball;
+		this.score = score;
 	}
 
 	public PApplet draw(PApplet w) { 
@@ -38,11 +40,11 @@ public class PongWorld implements IWorld {
 	 */
 	public IWorld update() { 
 		if (this.ball.hitPaddleLeft(this.paddleLeft) && this.ball.speed.x < 0) {
-			return new PongWorld(this.paddleLeft, this.paddleRight, this.ball.ballBounce());
+			return new PongWorld(this.paddleLeft.move(), this.paddleRight.move(), this.ball.ballBounce(), this.score.addToLeft());
 		} else if (this.ball.hitPaddleRight(this.paddleRight) && this.ball.speed.x > 0 ) {
-			return new PongWorld(this.paddleLeft, this.paddleRight, this.ball.ballBounce());
+			return new PongWorld(this.paddleLeft.move(), this.paddleRight.move(), this.ball.ballBounce(), this.score.addToRight());
 		} else {
-			return new PongWorld(this.paddleLeft, this.paddleRight, this.ball.ballMove());
+			return new PongWorld(this.paddleLeft.move(), this.paddleRight.move(), this.ball.ballMove(), this.score);
 		}
 	}
 
@@ -50,17 +52,37 @@ public class PongWorld implements IWorld {
 	 * returns a new PongWorld where the paddles have moved based on which key has been pressed
 	 */
 	public PongWorld keyPressed(KeyEvent kev) {
-		if (kev.getKeyCode() == PApplet.UP && paddleRight.y > 0) {
-			return new PongWorld(this.paddleLeft, new Paddle(this.paddleRight.x, this.paddleRight.y - 10, this.paddleRight.width, this.paddleRight.height), this.ball);
+		if (kev.getKeyCode() == PApplet.UP) {
+			return new PongWorld(this.paddleLeft, this.paddleRight.updateMove(-10), this.ball, this.score);
 		}
-		if (kev.getKeyCode() == PApplet.DOWN && paddleRight.y < 600 - paddleRight.height) {
-			return new PongWorld(this.paddleLeft, new Paddle(this.paddleRight.x, this.paddleRight.y + 10, this.paddleRight.width, this.paddleRight.height), this.ball);
+		if (kev.getKeyCode() == PApplet.DOWN) {
+			return new PongWorld(this.paddleLeft, this.paddleRight.updateMove(+10), this.ball, this.score);
 		}
-		if (kev.getKey() == 'w'&& paddleLeft.y > 0) {
-			return new PongWorld(new Paddle(this.paddleLeft.x, this.paddleLeft.y - 10, this.paddleLeft.width, this.paddleLeft.height), this.paddleRight, this.ball);
+		if (kev.getKey() == 'w') {
+			return new PongWorld(this.paddleLeft.updateMove(-10), this.paddleRight, this.ball, this.score);
 		}
-		if (kev.getKey() == 's' && paddleLeft.y < 600 - paddleLeft.height) {
-			return new PongWorld(new Paddle(this.paddleLeft.x, this.paddleLeft.y + 10, this.paddleLeft.width, this.paddleLeft.height), this.paddleRight, this.ball);
+		if (kev.getKey() == 's') {
+			return new PongWorld(this.paddleLeft.updateMove(10), this.paddleRight, this.ball, this.score);
+		}
+		if (kev.getKey() == ' ') {
+			
+			return new PongWorld(this.paddleLeft, this.paddleRight, new Ball( new Posn(400, 300), 20, new Posn (-5, 5)), this.score);  // reset score ?? TODO
+		}
+		else return this;
+	}
+	
+	public PongWorld keyReleased(KeyEvent kev) {
+		if (kev.getKeyCode() == PApplet.UP) {
+			return new PongWorld(this.paddleLeft, this.paddleRight.updateMove(10), this.ball, this.score);
+		}
+		if (kev.getKeyCode() == PApplet.DOWN) {
+			return new PongWorld(this.paddleLeft, this.paddleRight.updateMove(-10), this.ball, this.score);
+		}
+		if (kev.getKey() == 'w') {
+			return new PongWorld(this.paddleLeft.updateMove(10), this.paddleRight, this.ball, this.score);
+		}
+		if (kev.getKey() == 's') {
+			return new PongWorld(this.paddleLeft.updateMove(-10), this.paddleRight, this.ball, this.score);
 		}
 		else return this;
 	}
@@ -86,47 +108,6 @@ public class PongWorld implements IWorld {
 	@Override
 	public String toString() {
 		return "PongWorld [paddleLeft=" + paddleLeft + ", paddleRight=" + paddleRight + ", ball=" + ball + "]";
-	}
-
-}
-
-/*
- * represents the paddle on the left side of the screen
- */
-class Paddle  {
-	int x;
-	int y;
-	int height;
-	int width;
-
-	public Paddle(int x, int y, int width, int height ) {
-		super();
-		this.x = x;
-		this.y = y;
-		this.height = height;
-		this.width = width;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(height, width, x, y);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Paddle other = (Paddle) obj;
-		return height == other.height && width == other.width && x == other.x && y == other.y;
-	}
-
-	@Override
-	public String toString() {
-		return "Paddle [x=" + x + ", y=" + y + ", height=" + height + ", width=" + width + "]";
 	}
 
 }

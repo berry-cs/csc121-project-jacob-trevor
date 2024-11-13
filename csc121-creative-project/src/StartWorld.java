@@ -1,3 +1,5 @@
+import javax.swing.JOptionPane;
+
 import processing.core.PApplet;
 import processing.event.MouseEvent;
 
@@ -12,7 +14,12 @@ public class StartWorld implements IWorld {
 	
 
 	public IWorld mouseClicked(MouseEvent mev) {
-		return new PongWorld(new Paddle(0, 200, 25, 150), new Paddle(775, 200, 25, 150), new Ball( new Posn(400, 300), 20, new Posn (-5, 5)));   	// <----- 2. create your initial world object
+		String leftName = "A"; // JOptionPane.showInputDialog("Left player name: ");
+		String rightName = "B"; // JOptionPane.showInputDialog("Right player name: ");
+		return new PongWorld(new Paddle(0, 200, 25, 150), new Paddle(775, 200, 25, 150),
+				new Ball( new Posn(400, 300), 20, new Posn (-5, 5)),
+				new ScoreData(leftName, rightName, 0, 0)
+				);   	// <----- 2. create your initial world object
 	}
 }
 
