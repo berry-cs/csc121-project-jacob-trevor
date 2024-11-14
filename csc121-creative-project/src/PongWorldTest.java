@@ -30,25 +30,28 @@ class PongWorldTest {
 	Paddle paddleRight = new Paddle(775, 225, 25, 150);
 
 	// paddle updated examples
-	Paddle paddleRightUpdateDown = new Paddle(775, 235, 25, 150);
-	Paddle paddleLeftUpdateDown = new Paddle(0, 235, 25, 150);
-	Paddle paddleLeftUpdateUp = new Paddle(0, 215, 25, 150);
-	Paddle paddleRightUpdateUp = new Paddle(775, 215, 25, 150);
+	Paddle paddleRightUpdateDown = new Paddle(775, 225, 25, 150);
+	Paddle paddleLeftUpdateDown = new Paddle(0, 225, 25, 150);
+	Paddle paddleLeftUpdateUp = new Paddle(0, 225, 25, 150);
+	Paddle paddleRightUpdateUp = new Paddle(775, 225, 25, 150);
+	
+	// score examples
+	ScoreData score = new ScoreData("Trevor", "Jacob", 0, 0);
 
 	// world examples
-	PongWorld w1 = new PongWorld(paddleLeft, paddleRight, b1);
-	PongWorld w2 = new PongWorld(paddleLeft, paddleRight, b5);
-	PongWorld w3 = new PongWorld(paddleLeft, paddleRight, b3);
-	PongWorld w4 = new PongWorld(paddleLeft, paddleRight, b10);
-	PongWorld w5 = new PongWorld(paddleLeft, paddleRight, b12);
-	PongWorld w6 = new PongWorld(paddleLeft, paddleRight, b14);
+	PongWorld w1 = new PongWorld(paddleLeft, paddleRight, b1, score);
+	PongWorld w2 = new PongWorld(paddleLeft, paddleRight, b5, score);
+	PongWorld w3 = new PongWorld(paddleLeft, paddleRight, b3, score);
+	PongWorld w4 = new PongWorld(paddleLeft, paddleRight, b10, score);
+	PongWorld w5 = new PongWorld(paddleLeft, paddleRight, b12, score);
+	PongWorld w6 = new PongWorld(paddleLeft, paddleRight, b14, score);
 
 	// updated worlds examples
-	PongWorld w1UpdatedPaddleRightUP = new PongWorld(paddleLeft, paddleRightUpdateUp, b1);
-	PongWorld w1UpdatedPaddleRightDown = new PongWorld(paddleLeft, paddleRightUpdateDown, b1);
-	PongWorld w1UpdatedPaddleLeftDown = new PongWorld(paddleLeftUpdateDown, paddleRight, b1);
-	PongWorld w1UpdatedPaddleLeftUp = new PongWorld(paddleLeftUpdateUp, paddleRight, b1);
-	PongWorld w3UpdatedBall = new PongWorld(paddleLeft, paddleRight, b4);
+	PongWorld w1UpdatedPaddleRightUP = new PongWorld(paddleLeft, paddleRightUpdateUp, b1, score);
+	PongWorld w1UpdatedPaddleRightDown = new PongWorld(paddleLeft, paddleRightUpdateDown, b1, score);
+	PongWorld w1UpdatedPaddleLeftDown = new PongWorld(paddleLeftUpdateDown, paddleRight, b1, score);
+	PongWorld w1UpdatedPaddleLeftUp = new PongWorld(paddleLeftUpdateUp, paddleRight, b1, score);
+	PongWorld w3UpdatedBall = new PongWorld(paddleLeft, paddleRight, b4, score);
 
 	// Posn examples
 	Posn p1 = new Posn(5, 5);
@@ -72,10 +75,10 @@ class PongWorldTest {
 
 	@Test
 	void testupdate() {
-		assertEquals(new PongWorld(paddleLeft, paddleRight, new Ball(new Posn(105, 205), 10, new Posn(5,5))), w3.update());
-		assertEquals(new PongWorld(paddleLeft, paddleRight, new Ball(new Posn(5, 226), 10, new Posn(1, 5))), w4.update());  // ball bouncing off left paddle
-		assertEquals(new PongWorld(paddleLeft, paddleRight, new Ball(new Posn(770, 226), 10, new Posn(-5, 10))), w5.update());  // ball bouncing off Right paddle
-		assertEquals(new PongWorld(paddleLeft, paddleRight, new Ball(new Posn(770, 370), 10, new Posn(-5, 0))), w6.update());
+		assertEquals(new PongWorld(paddleLeft, paddleRight, new Ball(new Posn(105, 205), 10, new Posn(5,5)), score), w3.update());
+		assertEquals(new PongWorld(paddleLeft, paddleRight, new Ball(new Posn(5, 226), 10, new Posn(1, 5)), new ScoreData("Trevor", "Jacob", 1, 0)), w4.update());  // ball bouncing off left paddle
+		assertEquals(new PongWorld(paddleLeft, paddleRight, new Ball(new Posn(770, 226), 10, new Posn(-5, 10)), new ScoreData("Trevor", "Jacob", 0, 1)), w5.update());  // ball bouncing off Right paddle
+		assertEquals(new PongWorld(paddleLeft, paddleRight, new Ball(new Posn(770, 370), 10, new Posn(-5, 0)), score), w6.update());
 		
 	}
 
@@ -111,7 +114,7 @@ class PongWorldTest {
 	}
 	
 	@Test
-	void PosnClass( ) {
+	void TestPosnClass() {
 		// getX
 		assertEquals(5, p1.getX());
 		assertEquals(-25, p7.getX());
@@ -124,6 +127,13 @@ class PongWorldTest {
 		assertEquals(new Posn(15, 6), p1.translate(p2));
 		assertEquals(new Posn(20, -9), p2.translate(p3));
 		assertEquals(new Posn(-21, 0), p6.translate(p7));
+	}
+	
+	@Test
+	void TestScoreData() {
+		assertEquals(new ScoreData("Trevor", "Jacob", 0, 1), score.addToRight(b12, paddleRight));
+		assertEquals(new ScoreData("Trevor", "Jacob", 1, 1), score.addToLeft(b10, paddleLeft));
+		assertEquals(new ScoreData("Trevor", "Jacob", 1, 1), score.addToLeft(b12, paddleLeft));
 	}
 
 }

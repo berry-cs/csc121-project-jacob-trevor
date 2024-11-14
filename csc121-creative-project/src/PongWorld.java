@@ -14,7 +14,6 @@ public class PongWorld implements IWorld {
 
 	Paddle paddleLeft;
 	Paddle paddleRight;
-	
 	Ball ball;
 	ScoreData score;
 
@@ -32,6 +31,11 @@ public class PongWorld implements IWorld {
 		w.circle(ball.loc.getX(), ball.loc.getY(), 20);
 		w.rect(paddleLeft.x, paddleLeft.y, paddleLeft.width, paddleLeft.height);
 		w.rect(paddleRight.x, paddleRight.y, paddleRight.width, paddleRight.height);
+		w.textSize(50);
+		w.text(score.leftName + ":", 50, 50);
+		w.text(score.rightName + ":", 700, 50);
+		w.text(score.leftScore, 90, 50);
+		w.text(score.rightScore, 740, 50);
 		return w; 	
 	}
 
@@ -40,12 +44,15 @@ public class PongWorld implements IWorld {
 	 */
 	public IWorld update() { 
 		if (this.ball.hitPaddleLeft(this.paddleLeft) && this.ball.speed.x < 0) {
-			return new PongWorld(this.paddleLeft.move(), this.paddleRight.move(), this.ball.ballBounce(), this.score.addToLeft());
+			return new PongWorld(this.paddleLeft.move(), this.paddleRight.move(), this.ball.ballBounce(), this.score.addToLeft(ball, paddleLeft));
 		} else if (this.ball.hitPaddleRight(this.paddleRight) && this.ball.speed.x > 0 ) {
-			return new PongWorld(this.paddleLeft.move(), this.paddleRight.move(), this.ball.ballBounce(), this.score.addToRight());
+			return new PongWorld(this.paddleLeft.move(), this.paddleRight.move(), this.ball.ballBounce(), this.score.addToRight(ball, paddleRight));
+		} else if (this.ball.loc.x > 800 || this.ball.loc.x < 0) {
+			return new StartWorld();
 		} else {
 			return new PongWorld(this.paddleLeft.move(), this.paddleRight.move(), this.ball.ballMove(), this.score);
 		}
+		
 	}
 
 	/*
@@ -89,7 +96,7 @@ public class PongWorld implements IWorld {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(ball, paddleLeft, paddleRight);
+		return Objects.hash(paddleLeft, paddleRight, score);
 	}
 
 	@Override
@@ -101,172 +108,13 @@ public class PongWorld implements IWorld {
 		if (getClass() != obj.getClass())
 			return false;
 		PongWorld other = (PongWorld) obj;
-		return Objects.equals(ball, other.ball) && Objects.equals(paddleLeft, other.paddleLeft)
-				&& Objects.equals(paddleRight, other.paddleRight);
+		return Objects.equals(paddleLeft, other.paddleLeft) && Objects.equals(paddleRight, other.paddleRight)
+				&& Objects.equals(score, other.score);
 	}
 
 	@Override
 	public String toString() {
-		return "PongWorld [paddleLeft=" + paddleLeft + ", paddleRight=" + paddleRight + ", ball=" + ball + "]";
+		return "PongWorld [paddleLeft=" + paddleLeft + ", paddleRight=" + paddleRight + ", score=" + score + "]";
 	}
 
 }
-
-/*
- * represents the ball within a Pong game
- */
-class Ball {
-	Posn loc;
-	int diameter;
-	Posn speed;
-
-	Ball(Posn loc, int diameter, Posn speed) {
-		super();
-		this.loc = loc;
-		this.diameter = diameter;
-		this.speed = speed;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(diameter, loc, speed);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Ball other = (Ball) obj;
-		return diameter == other.diameter && Objects.equals(loc, other.loc) && Objects.equals(speed, other.speed);
-	}
-
-	/** tell if this ball has hit the left paddle */
-	public Boolean hitPaddleLeft(Paddle paddle) {
-
-		if (paddle.y < loc.y && 
-				paddle.y + paddle.height > loc.y && 
-				Math.abs(loc.x - paddle.x) < 40)
-		{
-			
-			return true;
-		}
-
-		else return false;
-	}
-	
-	/** tell if this ball has hit the Right paddle */
-	public Boolean hitPaddleRight(Paddle paddle) {
-
-		if (paddle.y < loc.y && 
-				paddle.y + paddle.height > loc.y && 
-				Math.abs(loc.x - paddle.x) < 11)
-		{
-			
-			return true;
-		}
-
-		else return false;
-	}
-
-	/** updates the location of the ball according to its current speed direction
-	 * and also updates the speed to bounce off the top and bottom edges
-	 */
-	public Ball ballMove() {
-		return new Ball(this.loc.translate(this.speed) , this.diameter, updateSpeedDirection(this.speed));
-	}
-
-	/*
-	 * updates the x value of the balls speed to bounce off of the paddles
-	 */
-	public Ball ballBounce( ) {
-		return new Ball(this.loc, this.diameter, bounceX(this.speed));
-	}
-
-	/**
-	 * flip the x value of the speed if hitPaddle returns true
-	 * 
-	 */
-	public Posn bounceX(Posn speed) { 
-		return new Posn(-speed.x,  speed.y); 
-	}
-
-	/** 
-	 * produces a flipped y value for the speed if it's at a top or bottom boundary
-	 */
-	public Posn updateSpeedDirection(Posn speed) {
-		if (this.loc.y <= 0 + this.diameter && speed.y < 0) {  
-			return new Posn(speed.x,  -speed.y); 
-		}
-
-		else if (this.loc.y >= 600 - this.diameter && speed.y > 0) {
-			return new Posn(speed.x,  -speed.y); 
-		}
-
-		else return speed;
-	}
-
-	@Override
-	public String toString() {
-		return "Ball [loc=" + loc + ", diameter=" + diameter + ", speed=" + speed + "]";
-	}
-
-}
-
-/** 
- * represents a Posn with an x and y value 
- */
-class Posn {
-	int x;
-	int y;
-
-	Posn(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
-
-	/**
-	 * @return the x
-	 */
-	public int getX() {
-		return x;
-	}
-
-	/**
-	 * @return the y
-	 */
-	public int getY() {
-		return y;
-	}
-
-	/** moves this posn by the given offsets */
-	public Posn translate(Posn offset) {
-		return new Posn( this.x + offset.x, this.y + offset.y );
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(x, y);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Posn other = (Posn) obj;
-		return x == other.x && y == other.y;
-	}
-
-	@Override
-	public String toString() {
-		return "Posn [x=" + x + ", y=" + y + "]";
-	}
-
-} 

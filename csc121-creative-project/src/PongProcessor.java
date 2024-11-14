@@ -10,15 +10,12 @@ public class PongProcessor {
 
 		System.out.println ("Enter File Name"); 
 
-		// get user's input from "standard input" --- ususaly the keyboard
+		// get user's input from "standard input" --- ususally the keyboard
 		Scanner kb = new Scanner (System.in); 
 		String filename = kb.nextLine(); 
 		
 		System.out.println("Reading from" + filename + "..."); 
 	
- 
-		
-		
 		// open the data file 
 		Scanner sc = new Scanner (new File(filename));
 		
