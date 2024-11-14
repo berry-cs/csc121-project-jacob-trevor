@@ -31,11 +31,12 @@ public class PongWorld implements IWorld {
 		w.circle(ball.loc.getX(), ball.loc.getY(), 20);
 		w.rect(paddleLeft.x, paddleLeft.y, paddleLeft.width, paddleLeft.height);
 		w.rect(paddleRight.x, paddleRight.y, paddleRight.width, paddleRight.height);
-		w.textSize(50);
+		w.textSize(25);
 		w.text(score.leftName + ":", 50, 50);
 		w.text(score.rightName + ":", 700, 50);
-		w.text(score.leftScore, 90, 50);
-		w.text(score.rightScore, 740, 50);
+		w.textSize(50);
+		w.text(score.leftScore, 45, 100);
+		w.text(score.rightScore, 695, 100);
 		return w; 	
 	}
 
