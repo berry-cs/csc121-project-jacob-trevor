@@ -17,9 +17,14 @@ public class PongWorld implements IWorld {
 	private Paddle paddleLeft;
 	private Paddle paddleRight;
 	private Ball ball;
-	private ScoreData score;
-
-	PongWorld(Paddle paddleLeft, Paddle paddleRight, Ball ball, ScoreData score) {
+	private ScoreDataPair score;
+	
+	//private ScoreData leftScore;
+	//private ScoreData rightScore;
+	
+	//private  ScoreBoard sb;
+	
+	PongWorld(Paddle paddleLeft, Paddle paddleRight, Ball ball, ScoreDataPair score) {
 		super();
 		this.paddleLeft = paddleLeft;
 		this.paddleRight = paddleRight;
@@ -51,7 +56,13 @@ public class PongWorld implements IWorld {
 		} else if (this.ball.hitPaddleRight(this.paddleRight) && this.ball.getSpeed().getX() > 0 ) {
 			return new PongWorld(this.paddleLeft.move(), this.paddleRight.move(), this.ball.ballBounce(), this.score.addToRight(ball, paddleRight));
 		} else if (this.ball.getLoc().getX() > 800 || this.ball.getLoc().getX() < 0) {
-			return new ResetWorld();
+			
+			//sb.recordAScore(leftScore);
+			//sb.recordAScore(rightScore);
+			//sb.saveToFile();
+			
+			// return new ResetWorld();
+			return new ResetWorld(this);
 		} else {
 			return new PongWorld(this.paddleLeft.move(), this.paddleRight.move(), this.ball.ballMove(), this.score);
 		}

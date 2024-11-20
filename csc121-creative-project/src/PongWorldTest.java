@@ -36,8 +36,8 @@ class PongWorldTest {
 	Paddle paddleRightUpdateUp = new Paddle(775, 225, 25, 150);
 	
 	// score examples
-	ScoreData score = new ScoreData("Trevor", "Jacob", 0, 0);
-	ScoreData scoreUpdate = new ScoreData("Trevor", "Jacob", 0, 1);
+	ScoreDataPair score = new ScoreDataPair("Trevor", "Jacob", 0, 0);
+	ScoreDataPair scoreUpdate = new ScoreDataPair("Trevor", "Jacob", 0, 1);
 
 	// world examples
 	PongWorld w1 = new PongWorld(paddleLeft, paddleRight, b1, score);
@@ -77,8 +77,8 @@ class PongWorldTest {
 	@Test
 	void testupdate() {
 		assertEquals(new PongWorld(paddleLeft, paddleRight, new Ball(new Posn(105, 205), 10, new Posn(5,5)), score), w3.update());
-		assertEquals(new PongWorld(paddleLeft, paddleRight, new Ball(new Posn(5, 226), 10, new Posn(1, 5)), new ScoreData("Trevor", "Jacob", 1, 0)), w4.update());  // ball bouncing off left paddle
-		assertEquals(new PongWorld(paddleLeft, paddleRight, new Ball(new Posn(770, 226), 10, new Posn(-5, 10)), new ScoreData("Trevor", "Jacob", 0, 1)), w5.update());  // ball bouncing off Right paddle
+		assertEquals(new PongWorld(paddleLeft, paddleRight, new Ball(new Posn(5, 226), 10, new Posn(1, 5)), new ScoreDataPair("Trevor", "Jacob", 1, 0)), w4.update());  // ball bouncing off left paddle
+		assertEquals(new PongWorld(paddleLeft, paddleRight, new Ball(new Posn(770, 226), 10, new Posn(-5, 10)), new ScoreDataPair("Trevor", "Jacob", 0, 1)), w5.update());  // ball bouncing off Right paddle
 		assertEquals(new PongWorld(paddleLeft, paddleRight, new Ball(new Posn(770, 370), 10, new Posn(-5, 0)), scoreUpdate), w6.update());
 		
 	}
@@ -132,9 +132,9 @@ class PongWorldTest {
 	
 	@Test
 	void TestScoreData() {
-		assertEquals(new ScoreData("Trevor", "Jacob", 0, 1), score.addToRight(b12, paddleRight));
-		assertEquals(new ScoreData("Trevor", "Jacob", 1, 0), score.addToLeft(b10, paddleLeft));
-		assertEquals(new ScoreData("Trevor", "Jacob", 0, 0), score.addToLeft(b12, paddleLeft));
+		assertEquals(new ScoreDataPair("Trevor", "Jacob", 0, 1), score.addToRight(b12, paddleRight));
+		assertEquals(new ScoreDataPair("Trevor", "Jacob", 1, 0), score.addToLeft(b10, paddleLeft));
+		assertEquals(new ScoreDataPair("Trevor", "Jacob", 0, 0), score.addToLeft(b12, paddleLeft));
 	}
 
 }
