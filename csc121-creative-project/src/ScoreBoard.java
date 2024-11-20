@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 import processing.core.PApplet;
 
-/**
+/*
  * Represents the history of scores of all played games
  */
 public class ScoreBoard {
@@ -20,13 +20,11 @@ public class ScoreBoard {
 		
 	}
 	
-	
 	public void recordAScore(ScoreData score) {
 		history.add(score);
 	}
 	
 	public ScoreData findHighScore() {
-		// TODO
 		return null;
 	}
 	
@@ -36,6 +34,9 @@ public class ScoreBoard {
 		
 	}
 	
+	/*
+	 * draws the score board
+	 */
 	public PApplet draw(PApplet w) {
 		
 		
