@@ -4,8 +4,8 @@ import java.util.Objects;
  * represents a Posn with an x and y value 
  */
 class Posn {
-	int x;
-	int y;
+	private int x;
+	private int y;
 
 	Posn(int x, int y) {
 		this.x = x;

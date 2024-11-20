@@ -6,9 +6,9 @@
 import java.util.Objects;
 
 class Ball {
-	Posn loc;
-	int diameter;
-	Posn speed;
+	private Posn loc;
+	private int diameter;
+	private Posn speed;
 
 	Ball(Posn loc, int diameter, Posn speed) {
 		super();
@@ -37,9 +37,9 @@ class Ball {
 	/** tell if this ball has hit the left paddle */
 	public Boolean hitPaddleLeft(Paddle paddle) {
 
-		if (paddle.y < loc.y && 
-				paddle.y + paddle.height > loc.y && 
-				Math.abs(loc.x - paddle.x) < 40)
+		if (paddle.getY() < loc.getY() && 
+				paddle.getY() + paddle.getHeight() > loc.getY() && 
+				Math.abs(loc.getX() - paddle.getX()) < 40)
 		{
 			
 			return true;
@@ -48,12 +48,14 @@ class Ball {
 		else return false;
 	}
 	
-	/** tell if this ball has hit the Right paddle */
+	/*
+	 *  tell if this ball has hit the Right paddle 
+	 */
 	public Boolean hitPaddleRight(Paddle paddle) {
 
-		if (paddle.y < loc.y && 
-				paddle.y + paddle.height > loc.y && 
-				Math.abs(loc.x - paddle.x) < 11)
+		if (paddle.getY() < loc.getY() && 
+				paddle.getY() + paddle.getHeight() > loc.getY() && 
+				Math.abs(loc.getX() - paddle.getX()) < 11)
 		{
 			
 			return true;
@@ -81,22 +83,34 @@ class Ball {
 	 * 
 	 */
 	public Posn bounceX(Posn speed) { 
-		return new Posn(-speed.x,  speed.y); 
+		return new Posn(-speed.getX(),  speed.getY()); 
 	}
 
 	/** 
 	 * produces a flipped y value for the speed if it's at a top or bottom boundary
 	 */
 	public Posn updateSpeedDirection(Posn speed) {
-		if (this.loc.y <= 0 + this.diameter && speed.y < 0) {  
-			return new Posn(speed.x,  -speed.y); 
+		if (this.loc.getY() <= 0 + this.diameter && speed.getY() < 0) {  
+			return new Posn(speed.getX(),  -speed.getY()); 
 		}
 
-		else if (this.loc.y >= 600 - this.diameter && speed.y > 0) {
-			return new Posn(speed.x,  -speed.y); 
+		else if (this.loc.getY() >= 600 - this.diameter && speed.getY() > 0) {
+			return new Posn(speed.getX(),  -speed.getY()); 
 		}
 
 		else return speed;
+	}
+	
+	public Posn getLoc() {
+		return this.loc;
+	}
+	
+	public int getDiameter() {
+		return this.diameter;
+	}
+	
+	public Posn getSpeed() {
+		return this.speed;
 	}
 
 	@Override

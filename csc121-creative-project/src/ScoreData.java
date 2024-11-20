@@ -1,10 +1,11 @@
+import java.io.PrintWriter;
 import java.util.Objects;
 
 public class ScoreData {
-	String leftName;
-	String rightName;
-	int leftScore;
-	int rightScore;
+	private String leftName;
+	private String rightName;
+	private int leftScore;
+	private int rightScore;
 	
 	ScoreData(String leftName, String rightName, int leftScore, int rightScore) {
 		super();
@@ -16,7 +17,7 @@ public class ScoreData {
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(leftName, leftScore, rightName, rightScore);
+		return Objects.hash(getLeftName(), getLeftScore(), getRightName(), getRightScore());
 	}
 
 	@Override
@@ -28,20 +29,20 @@ public class ScoreData {
 		if (getClass() != obj.getClass())
 			return false;
 		ScoreData other = (ScoreData) obj;
-		return Objects.equals(leftName, other.leftName) && leftScore == other.leftScore
-				&& Objects.equals(rightName, other.rightName) && rightScore == other.rightScore;
+		return Objects.equals(getLeftName(), other.getLeftName()) && getLeftScore() == other.getLeftScore()
+				&& Objects.equals(getRightName(), other.getRightName()) && getRightScore() == other.getRightScore();
 	}
 
 	@Override
 	public String toString() {
-		return "ScoreData [leftName=" + leftName + ", rightName=" + rightName + ", leftScore=" + leftScore
-				+ ", rightScore=" + rightScore + "]";
+		return "ScoreData [leftName=" + getLeftName() + ", rightName=" + getRightName() + ", leftScore=" + getLeftScore()
+				+ ", rightScore=" + getRightScore() + "]";
 	}
 
 	// if the ball hits the left players paddle, add one to the left players score
 	 public ScoreData addToLeft(Ball aBall, Paddle paddle) {
 		 if (aBall.hitPaddleLeft(paddle)) {
-			 return new ScoreData(this.leftName, this.rightName, this.leftScore += 1, this.rightScore);
+			 return new ScoreData(this.getLeftName(), this.getRightName(), (this.getLeftScore() + 1), this.getRightScore());
 		 }
 		 else return this;
 	 }
@@ -49,8 +50,45 @@ public class ScoreData {
 	// if the ball hits the right players paddle, add one to the right players score
 	 public ScoreData addToRight(Ball aBall, Paddle paddle) { 
 		 if (aBall.hitPaddleRight(paddle)) {
-			 return new ScoreData(this.leftName, this.rightName, this.leftScore, this.rightScore += 1);
+			 return new ScoreData(this.getLeftName(), this.getRightName(), this.getLeftScore(), (this.getRightScore() + 1));
 		 }
 		 else return this;
 	 }
+	 
+	 /*
+	  * 
+	  */
+	 public void writeToFile(PrintWriter pw) {
+		 pw.print(getLeftScore() + " " + getRightScore() + " " + getLeftName() + " " + getRightName());
+
+	 }
+	 
+	 /*
+	  * returns the left name of this ScoreData
+	  */
+	 public String getLeftName() {
+		 return leftName;
+	 }
+
+	 /*
+	  * returns the right name of this ScoreData
+	  */
+	 public String getRightName() {
+		 return rightName;
+	 }
+	 
+	 /*
+	  * returns the left players score 
+	  */
+	 public int getLeftScore() {
+		 return leftScore;
+	 }
+
+	 /*
+	  * returns the right players score 
+	  */
+	 public int getRightScore() {
+		 return rightScore;
+	 }
+
 }

@@ -6,10 +6,10 @@
 import java.util.Objects;
 
 public class Paddle  {
-	int x;
-	int y;
-	int height;
-	int width;
+	private int x;
+	private int y;
+	private int height;
+	private int width;
 	
 	int move;  // 0 , +10, -10
 	
@@ -54,7 +54,6 @@ public class Paddle  {
 		}
 	}
 	
-
 	@Override
 	public int hashCode() {
 		return Objects.hash(height, width, x, y);
@@ -76,5 +75,20 @@ public class Paddle  {
 	public String toString() {
 		return "Paddle [x=" + x + ", y=" + y + ", height=" + height + ", width=" + width + "]";
 	}
-
+	
+	public int getY() {
+		return this.y;
+	}
+	
+	public int getX() {
+		return this.x;
+	}
+	
+	public int getWidth() {
+		return this.width;
+	}
+	
+	public int getHeight() {
+		return this.height;
+	}
 }

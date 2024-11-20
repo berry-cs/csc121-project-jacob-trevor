@@ -1,22 +1,14 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
-
 import javax.swing.JOptionPane;
-
 import processing.core.PApplet;
 import processing.event.MouseEvent;
 
 public class StartWorld implements IWorld {
-	
-	ArrayList<ScoreData> Scoreboard;
 	
 	public PApplet draw(PApplet w) { 
 		w.background(0,190, 190);
 		w.fill(255);
 		w.textSize(100);
 		w.text("Click to start!", w.width / 6, w.height / 4);
-		this.Scoreboard = new ArrayList<ScoreData>();
 		
 		return w; 	
 	}
