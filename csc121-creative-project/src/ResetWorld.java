@@ -6,14 +6,11 @@ import processing.event.MouseEvent;
  * acts as an end screen and allows the players to save their scores 
  * and restart the game.
  */
-
 public class ResetWorld implements IWorld {
-	 PongWorld aWorld; 
 
-	ResetWorld(PongWorld aWorld) {
-		this.aWorld = aWorld;
-	}
-
+	/*
+	 * draws the game over screen
+	 */
 	public PApplet draw(PApplet w) {
 		w.background(42);
 		w.fill(255, 0, 0);
@@ -27,20 +24,13 @@ public class ResetWorld implements IWorld {
 
 		return w;
 	}
-	
-	// Allows the user to decided what to do next in Pong game
-	// They can save their score or restart the game 
-	
+
+	/*
+	 * allows the user to restart the game after the game ends
+	 */
 	@Override
 	public IWorld mousePressed (MouseEvent mev) {
-		if (mev.getButton() == PApplet.LEFT) {
-			return new StartWorld();
-		}
-		else if (mev.getButton() == PApplet.RIGHT) {
-			 aWorld.saveScore();
-			 return this;
-		} 
-		 return new StartWorld();
+		return new StartWorld();
 	}
 
 }

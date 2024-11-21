@@ -1,10 +1,9 @@
 
-/*
- * represents the ball within a Pong game
- */
-
 import java.util.Objects;
 
+/*
+ * represents a ball object within a pong world
+ */
 class Ball {
 	private Posn loc;
 	private int diameter;
@@ -17,24 +16,9 @@ class Ball {
 		this.speed = speed;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(diameter, loc, speed);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Ball other = (Ball) obj;
-		return diameter == other.diameter && Objects.equals(loc, other.loc) && Objects.equals(speed, other.speed);
-	}
-
-	/** tell if this ball has hit the left paddle */
+	/*
+	 * determine if this ball has hit the left paddle 
+	 */
 	public Boolean hitPaddleLeft(Paddle paddle) {
 
 		if (paddle.getY() < loc.getY() && 
@@ -49,7 +33,7 @@ class Ball {
 	}
 	
 	/*
-	 *  tell if this ball has hit the Right paddle 
+	 *  determines if this ball has collided with the right paddle
 	 */
 	public Boolean hitPaddleRight(Paddle paddle) {
 
@@ -86,7 +70,7 @@ class Ball {
 		return new Posn(-speed.getX(),  speed.getY()); 
 	}
 
-	/** 
+	/*
 	 * produces a flipped y value for the speed if it's at a top or bottom boundary
 	 */
 	public Posn updateSpeedDirection(Posn speed) {
@@ -101,18 +85,50 @@ class Ball {
 		else return speed;
 	}
 	
+	/*
+	 * returns the location of this ball
+	 */
 	public Posn getLoc() {
 		return this.loc;
 	}
 	
+	/*
+	 * returns the diameter value of this ball
+	 */
 	public int getDiameter() {
 		return this.diameter;
 	}
 	
+	/*
+	 * returns the speed value of this ball
+	 */
 	public Posn getSpeed() {
 		return this.speed;
 	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(diameter, loc, speed);
+	}
 
+	/*
+	 * hash code and equals methods
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Ball other = (Ball) obj;
+		return diameter == other.diameter && Objects.equals(loc, other.loc) && Objects.equals(speed, other.speed);
+	}
+
+	/*
+	 * to string method 
+	 */
 	@Override
 	public String toString() {
 		return "Ball [loc=" + loc + ", diameter=" + diameter + ", speed=" + speed + "]";

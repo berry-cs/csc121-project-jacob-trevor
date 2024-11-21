@@ -2,36 +2,36 @@
  * @author Trevor Childers and Jacob Bridges 
  */
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Objects;
 import processing.core.PApplet;
 import processing.event.KeyEvent;
 
 /*
- * represents the state of a pong game.
+ * represents a world in which a pong game is played
  */
 public class PongWorld implements IWorld {
 
 	private Paddle paddleLeft;
 	private Paddle paddleRight;
 	private Ball ball;
-	private ScoreDataPair score;
 	
-	//private ScoreData leftScore;
-	//private ScoreData rightScore;
+	private ScoreData leftScore;
+	private ScoreData rightScore;
 	
 	//private  ScoreBoard sb;
 	
-	PongWorld(Paddle paddleLeft, Paddle paddleRight, Ball ball, ScoreDataPair score) {
+	PongWorld(Paddle paddleLeft, Paddle paddleRight, Ball ball, ScoreData leftScore, ScoreData rightScore) {
 		super();
 		this.paddleLeft = paddleLeft;
 		this.paddleRight = paddleRight;
 		this.ball = ball;
-		this.score = score;
+		this.leftScore = leftScore;
+		this.rightScore = rightScore;
 	}
 
+	/*
+	 * draws the main game screen 
+	 */
 	public PApplet draw(PApplet w) { 
 		w.background(42);
 		w.fill(255);
@@ -39,22 +39,23 @@ public class PongWorld implements IWorld {
 		w.rect(paddleLeft.getX(), paddleLeft.getY(), paddleLeft.getWidth(), paddleLeft.getHeight());
 		w.rect(paddleRight.getX(), paddleRight.getY(), paddleRight.getWidth(), paddleRight.getHeight());
 		w.textSize(25);
-		w.text(score.getLeftName() + ":", 50, 50);
-		w.text(score.getRightName() + ":", 700, 50);
+		w.text(leftScore.getName() + ":", 50, 50);
+		w.text(rightScore.getName() + ":", 700, 50);
 		w.textSize(50);
-		w.text(score.getLeftScore(), 45, 100);
-		w.text(score.getRightScore(), 695, 100);
+		w.text(leftScore.getScore(), 45, 100);
+		w.text(rightScore.getScore(), 695, 100);
 		return w; 	
 	}
 
 	/*
-	 * represents an updated version of the PongWorld
+	 * Updates the state of this pong world based on different features of the game
+	 * such as player or ball movement, or the game ending
 	 */
 	public IWorld update() { 
 		if (this.ball.hitPaddleLeft(this.paddleLeft) && this.ball.getSpeed().getX() < 0) {
-			return new PongWorld(this.paddleLeft.move(), this.paddleRight.move(), this.ball.ballBounce(), this.score.addToLeft(ball, paddleLeft));
+			return new PongWorld(this.paddleLeft.move(), this.paddleRight.move(), this.ball.ballBounce(), this.leftScore.addToLeft(ball, paddleLeft), this.rightScore);
 		} else if (this.ball.hitPaddleRight(this.paddleRight) && this.ball.getSpeed().getX() > 0 ) {
-			return new PongWorld(this.paddleLeft.move(), this.paddleRight.move(), this.ball.ballBounce(), this.score.addToRight(ball, paddleRight));
+			return new PongWorld(this.paddleLeft.move(), this.paddleRight.move(), this.ball.ballBounce(), this.leftScore, this.rightScore.addToRight(ball, paddleRight));
 		} else if (this.ball.getLoc().getX() > 800 || this.ball.getLoc().getX() < 0) {
 			
 			//sb.recordAScore(leftScore);
@@ -62,11 +63,10 @@ public class PongWorld implements IWorld {
 			//sb.saveToFile();
 			
 			// return new ResetWorld();
-			return new ResetWorld(this);
+			return new ResetWorld();
 		} else {
-			return new PongWorld(this.paddleLeft.move(), this.paddleRight.move(), this.ball.ballMove(), this.score);
+			return new PongWorld(this.paddleLeft.move(), this.paddleRight.move(), this.ball.ballMove(), this.leftScore, this.rightScore);
 		}
-		
 	}
 
 	/*
@@ -74,20 +74,20 @@ public class PongWorld implements IWorld {
 	 */
 	public PongWorld keyPressed(KeyEvent kev) {
 		if (kev.getKeyCode() == PApplet.UP) {
-			return new PongWorld(this.paddleLeft, this.paddleRight.updateMove(-10), this.ball, this.score);
+			return new PongWorld(this.paddleLeft, this.paddleRight.updateMove(-10), this.ball, this.leftScore, this.rightScore);
 		}
 		if (kev.getKeyCode() == PApplet.DOWN) {
-			return new PongWorld(this.paddleLeft, this.paddleRight.updateMove(+10), this.ball, this.score);
+			return new PongWorld(this.paddleLeft, this.paddleRight.updateMove(+10), this.ball, this.leftScore, this.rightScore);
 		}
 		if (kev.getKey() == 'w') {
-			return new PongWorld(this.paddleLeft.updateMove(-10), this.paddleRight, this.ball, this.score);
+			return new PongWorld(this.paddleLeft.updateMove(-10), this.paddleRight, this.ball, this.leftScore, this.rightScore);
 		}
 		if (kev.getKey() == 's') {
-			return new PongWorld(this.paddleLeft.updateMove(10), this.paddleRight, this.ball, this.score);
+			return new PongWorld(this.paddleLeft.updateMove(10), this.paddleRight, this.ball, this.leftScore, this.rightScore);
 		}
 		if (kev.getKey() == ' ') {
 			
-			return new PongWorld(this.paddleLeft, this.paddleRight, new Ball( new Posn(400, 300), 20, new Posn (-5, 5)), this.score); 
+			return new PongWorld(this.paddleLeft, this.paddleRight, new Ball( new Posn(400, 300), 20, new Posn (-5, 5)), this.leftScore, this.rightScore); 
 		}
 		else return this;
 	}
@@ -98,39 +98,43 @@ public class PongWorld implements IWorld {
 	 */
 	public PongWorld keyReleased(KeyEvent kev) {
 		if (kev.getKeyCode() == PApplet.UP) {
-			return new PongWorld(this.paddleLeft, this.paddleRight.updateMove(10), this.ball, this.score);
+			return new PongWorld(this.paddleLeft, this.paddleRight.updateMove(10), this.ball, this.leftScore, this.rightScore);
 		}
 		if (kev.getKeyCode() == PApplet.DOWN) {
-			return new PongWorld(this.paddleLeft, this.paddleRight.updateMove(-10), this.ball, this.score);
+			return new PongWorld(this.paddleLeft, this.paddleRight.updateMove(-10), this.ball, this.leftScore, this.rightScore);
 		}
 		if (kev.getKey() == 'w') {
-			return new PongWorld(this.paddleLeft.updateMove(10), this.paddleRight, this.ball, this.score);
+			return new PongWorld(this.paddleLeft.updateMove(10), this.paddleRight, this.ball, this.leftScore, this.rightScore);
 		}
 		if (kev.getKey() == 's') {
-			return new PongWorld(this.paddleLeft.updateMove(-10), this.paddleRight, this.ball, this.score);
+			return new PongWorld(this.paddleLeft.updateMove(-10), this.paddleRight, this.ball, this.leftScore, this.rightScore);
 		}
 		else return this;
 	}
 	
+//	/*
+//	 * writes the score data from this game to an output file
+//	 */
+//	public void saveScore() {
+//
+//		try {
+//			PrintWriter pw = new PrintWriter(new File("output.txt"));
+//
+//			this.leftScore.writeToFile(pw);
+//			this.rightScore.writeToFile(pw);
+//
+//			pw.close();
+//		} catch (IOException exp) {
+//			System.out.println("Problem Saving Score: " + exp.getMessage());
+//		}
+//	}
+
 	/*
-	 * writes the score data from this game to an output file
+	 * hash code and equals methods
 	 */
-	public void saveScore() {
-
-		try {
-			PrintWriter pw = new PrintWriter(new File("output.txt"));
-
-			this.score.writeToFile(pw);
-
-			pw.close();
-		} catch (IOException exp) {
-			System.out.println("Problem Saving Score: " + exp.getMessage());
-		}
-	}
-
 	@Override
 	public int hashCode() {
-		return Objects.hash(paddleLeft, paddleRight, score);
+		return Objects.hash(ball, leftScore, paddleLeft, paddleRight, rightScore);
 	}
 
 	@Override
@@ -142,13 +146,15 @@ public class PongWorld implements IWorld {
 		if (getClass() != obj.getClass())
 			return false;
 		PongWorld other = (PongWorld) obj;
-		return Objects.equals(paddleLeft, other.paddleLeft) && Objects.equals(paddleRight, other.paddleRight)
-				&& Objects.equals(score, other.score);
+		return Objects.equals(ball, other.ball) && Objects.equals(leftScore, other.leftScore)
+				&& Objects.equals(paddleLeft, other.paddleLeft) && Objects.equals(paddleRight, other.paddleRight)
+				&& Objects.equals(rightScore, other.rightScore);
 	}
 
 	@Override
 	public String toString() {
-		return "PongWorld [paddleLeft=" + paddleLeft + ", paddleRight=" + paddleRight + ", score=" + score + "]";
+		return "PongWorld [paddleLeft=" + paddleLeft + ", paddleRight=" + paddleRight + ", ball=" + ball
+				+ ", leftScore=" + leftScore + ", rightScore=" + rightScore + "]";
 	}
 
 }
