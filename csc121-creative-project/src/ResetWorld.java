@@ -18,7 +18,7 @@ public class ResetWorld implements IWorld {
 		w.text("Game Over", 170, 100);
 		w.fill(255);
 		w.textSize(35);
-		w.text("Right click on the mouse to save your scores", 125, 300);
+		w.text("Right click on the mouse to save your scores", 100, 300);
 		w.textSize(35);
 		w.text("Click the mouse to go back to the home screen", 90, 500);
 

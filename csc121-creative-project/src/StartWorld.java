@@ -8,10 +8,10 @@ public class StartWorld implements IWorld {
 		ScoreBoard sb = new ScoreBoard();
 		//ScoreData high = sb.findHighScore();
 		
-		w.background(0,190, 190);
+		w.background(0,90, 190);
 		w.fill(255);
-		w.textSize(100);
-		w.text("Click to start!", w.width / 6, w.height / 4);
+		w.textSize(75);
+		w.text("Click to Play Pong World!", w.width / 40, w.height / 4);
 		sb.draw(w);
 		
 		return w; 	
