@@ -17,6 +17,10 @@ public class StartWorld implements IWorld {
 		return w; 	
 	}
 	
+	// Allows the user to start the game, 
+	// enter both of their names, and 
+	// load in PongWorld 
+	
 	public IWorld mouseClicked(MouseEvent mev) {
 		String leftName = JOptionPane.showInputDialog("Left player name: ");
 		String rightName =  JOptionPane.showInputDialog("Right player name: ");

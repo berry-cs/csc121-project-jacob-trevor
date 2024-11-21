@@ -16,7 +16,6 @@ public class Paddle  {
 	public static final int MAX_MOVEMENT = 10; // sets a value for the move speed of the paddles
 
 	public Paddle(int x, int y, int width, int height) {
-		super();
 		this.x = x;
 		this.y = y;
 		this.height = height;

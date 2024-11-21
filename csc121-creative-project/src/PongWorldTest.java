@@ -89,8 +89,18 @@ class PongWorldTest {
 		assertEquals(w1UpdatedPaddleRightDown, w1.keyPressed(new KeyEvent(null, 0, 0, 0, '\0', PApplet.DOWN)));   // right paddle down
 		assertEquals(w1UpdatedPaddleLeftUp, w1.keyPressed(new KeyEvent(null, 0, 0, 0, 'w', 'w')));   // left paddle up
 		assertEquals(w1UpdatedPaddleLeftDown, w1.keyPressed(new KeyEvent(null, 0, 0, 0, 's', 's')));   // left paddle down
+		
+		assertEquals(w1, w1.keyPressed(new KeyEvent(null, 0, KeyEvent.PRESS, 0, 'x', 'x'))); // do nothing if x is pressed 
+		assertEquals(w1, w1.keyPressed(new KeyEvent(null, 0, KeyEvent.PRESS, 0, '\0', PApplet.BACKSPACE))); // do nothing if backspace is pressed 
 	}
-
+	
+	@Test
+	void testKeyReleased() {
+		assertEquals (w1UpdatedPaddleRightUP, w1.keyReleased(new KeyEvent(null, 0, KeyEvent.RELEASE, 0, '\0', PApplet.DOWN))); // right paddle stops going down
+		assertEquals (w1UpdatedPaddleRightDown, w1.keyReleased(new KeyEvent(null, 0, KeyEvent.RELEASE, 0, '\0', PApplet.UP))); // right paddle stops going up 
+		assertEquals (w1UpdatedPaddleLeftDown, w1.keyReleased(new KeyEvent(null, 0, KeyEvent.RELEASE, 0, 'w', 'w'))); // left paddle stops going up
+		assertEquals (w1UpdatedPaddleLeftUp, w1.keyReleased(new KeyEvent(null, 0, KeyEvent.RELEASE, 0, 's', 's'))); // left paddle stops going down
+	}
 	@Test 
 	void updateSpeedDirection() { 
 		assertEquals(p1, b1.updateSpeedDirection(new Posn(5, 5)));
@@ -106,6 +116,8 @@ class PongWorldTest {
 
 		assertEquals( true, b14.hitPaddleRight(paddleRight));
 		assertEquals( true, b10.hitPaddleLeft(paddleLeft));
+		assertEquals (false, b14.hitPaddleLeft(paddleLeft)); 
+		assertEquals (false, b1.hitPaddleRight(paddleRight)); 
 
 		assertEquals(new Ball(new Posn(40, 50), 10, new Posn(-5, 5)), b1.ballBounce());
 		assertEquals(new Ball(new Posn(100, 5), 10, new Posn(-10, -1)), b5.ballBounce());  // x flips sign
@@ -135,6 +147,7 @@ class PongWorldTest {
 		assertEquals(new ScoreData("Jacob", 1), rightScore.addToRight(b12, paddleRight));
 		assertEquals(new ScoreData("Trevor", 1), leftScore.addToLeft(b10, paddleLeft));
 		assertEquals(new ScoreData("Jacob", 0), rightScore.addToLeft(b1, paddleLeft));
+		assertEquals(new ScoreData("Trevor", 0), leftScore.addToRight(b2, paddleRight)); 
 	}
 
 }

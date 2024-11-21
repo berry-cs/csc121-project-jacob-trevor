@@ -25,7 +25,7 @@ public class ScoreData {
 	}
 
 	/*
-	 * if the ball hits the right players paddle, add one to the right players scor
+	 * if the ball hits the right players paddle, add one to the right players score
 	 */
 	public ScoreData addToRight(Ball aBall, Paddle paddle) { 
 		if (aBall.hitPaddleRight(paddle)) {
