@@ -8,5 +8,7 @@
 0 g
 0 s,
 0 s
-3 cj 
+3 cj
 3 jake
+2 g
+2 g
