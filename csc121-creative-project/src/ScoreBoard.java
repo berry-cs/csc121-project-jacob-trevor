@@ -18,7 +18,7 @@ public class ScoreBoard {
 		
 		try { 
 			Scanner sc = new Scanner (new File("output.txt")); 
-			this.history.clear(); 
+			//this.history.clear(); 
 			
 			while (sc.hasNextInt()) { 
 				ScoreData s = new ScoreData (sc); 
@@ -75,7 +75,7 @@ public class ScoreBoard {
 	 */
 	public PApplet draw(PApplet w) {
 		w.fill(255);
-		w.textSize(100);
+		w.textSize(50);
 		w.text("Score Board: " + history, w.width / 2, w.height / 2);
 		return w;
 	}

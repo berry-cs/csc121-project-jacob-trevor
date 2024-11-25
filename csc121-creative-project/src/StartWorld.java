@@ -33,8 +33,7 @@ public class StartWorld implements IWorld {
 		String rightName =  JOptionPane.showInputDialog("Right player name: ");
 		return new PongWorld(new Paddle(0, 200, paddleWidth, paddleHeight), new Paddle(775, 200, paddleWidth, paddleHeight),
 				new Ball(new Posn(400, 300), diameter, new Posn(RandomExclude.randomInt(), speed)),
-				new ScoreData(leftName, ScoreData.getStartingValue()), new ScoreData(rightName, ScoreData.getStartingValue())
-				); 
+				new ScoreData(leftName, ScoreData.getStartingValue()), new ScoreData(rightName, ScoreData.getStartingValue()), new ScoreBoard(new ArrayList<ScoreData>())); 
 	}
 	
 }
