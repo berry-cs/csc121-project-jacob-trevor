@@ -1,6 +1,8 @@
 
 import java.util.Objects;
 
+
+//private static final int MAX_MOVEMENT = 10; // sets a value for the move speed of the paddles
 /*
  * represents a ball object within a pong world
  */
@@ -8,7 +10,7 @@ class Ball {
 	private Posn loc;
 	private int diameter;
 	private Posn speed;
-
+	
 	Ball(Posn loc, int diameter, Posn speed) {
 		super();
 		this.loc = loc;
@@ -20,10 +22,11 @@ class Ball {
 	 * determine if this ball has hit the left paddle 
 	 */
 	public Boolean hitPaddleLeft(Paddle paddle) {
-
+		// value used in the hitPaddle methods to help determine when the ball hits the left paddle
+		int THRESHOLD = 40;
 		if (paddle.getY() < loc.getY() && 
 				paddle.getY() + paddle.getHeight() > loc.getY() && 
-				Math.abs(loc.getX() - paddle.getX()) < 40)
+				Math.abs(loc.getX() - paddle.getX()) < THRESHOLD)
 		{
 			
 			return true;
@@ -36,10 +39,11 @@ class Ball {
 	 *  determines if this ball has collided with the right paddle
 	 */
 	public Boolean hitPaddleRight(Paddle paddle) {
-
+		// value used in the hitPaddle methods to help determine when the ball hits the right paddle
+		int THRESHOLD = 11; 
 		if (paddle.getY() < loc.getY() && 
 				paddle.getY() + paddle.getHeight() > loc.getY() && 
-				Math.abs(loc.getX() - paddle.getX()) < 11)
+				Math.abs(loc.getX() - paddle.getX()) < THRESHOLD)
 		{
 			
 			return true;
@@ -74,11 +78,13 @@ class Ball {
 	 * produces a flipped y value for the speed if it's at a top or bottom boundary
 	 */
 	public Posn updateSpeedDirection(Posn speed) {
+		// represents the height of the window
+		int height = 600;
 		if (this.loc.getY() <= 0 + this.diameter && speed.getY() < 0) {  
 			return new Posn(speed.getX(),  -speed.getY()); 
 		}
 
-		else if (this.loc.getY() >= 600 - this.diameter && speed.getY() > 0) {
+		else if (this.loc.getY() >= height - this.diameter && speed.getY() > 0) {
 			return new Posn(speed.getX(),  -speed.getY()); 
 		}
 

@@ -2,6 +2,8 @@ import java.io.PrintWriter;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
+
 import processing.core.PApplet;
 
 /*
@@ -9,16 +11,25 @@ import processing.core.PApplet;
  */
 public class ScoreBoard {
 	
-	ArrayList<ScoreData> history;
+	ArrayList<ScoreData> history = new ArrayList<ScoreData>();
 	
-	public ScoreBoard() {
+	public ScoreBoard(ArrayList<ScoreData> history) {
+		this.history = history;
 		
-		// open the output.txt file and read in all the 
-		//   records into the history arraylist
-		// i.e.
-		// for each line of the output.txt file,
-		//    create a ScoreData object for it and add to the arraylist
+		try { 
+			Scanner sc = new Scanner (new File("output.txt")); 
+			this.history.clear(); 
+			
+			while (sc.hasNextInt()) { 
+				ScoreData s = new ScoreData (sc); 
+				recordAScore(s); 
+			}
+			
+			sc.close(); 
+		}catch (IOException exp) { 
+			System.out.println ("Problem loading scores" + exp.getMessage()); 
 		
+		}
 		
 	}
 	
@@ -33,7 +44,7 @@ public class ScoreBoard {
 	 * finds the highest score in a history of scores
 	 */
 	public ScoreData findHighScore() {
-		return null;
+		return new ScoreData("Trevor", 1);
 	}
 	
 	/*
@@ -63,8 +74,9 @@ public class ScoreBoard {
 	 * draws the score board
 	 */
 	public PApplet draw(PApplet w) {
-		
-		
+		w.fill(255);
+		w.textSize(100);
+		w.text("Score Board: " + history, w.width / 2, w.height / 2);
 		return w;
 	}
 }

@@ -2,6 +2,7 @@
  * @author Trevor Childers and Jacob Bridges 
  */
 
+import java.util.ArrayList;
 import java.util.Objects;
 import processing.core.PApplet;
 import processing.event.KeyEvent;
@@ -18,8 +19,8 @@ public class PongWorld implements IWorld {
 	private ScoreData leftScore;
 	private ScoreData rightScore;
 	
-	//private  ScoreBoard sb;
-	
+	private ScoreBoard sb;
+
 	PongWorld(Paddle paddleLeft, Paddle paddleRight, Ball ball, ScoreData leftScore, ScoreData rightScore) {
 		super();
 		this.paddleLeft = paddleLeft;
@@ -27,6 +28,7 @@ public class PongWorld implements IWorld {
 		this.ball = ball;
 		this.leftScore = leftScore;
 		this.rightScore = rightScore;
+		//this.sb = new ScoreBoard(nul);
 	}
 
 	/*
@@ -52,15 +54,17 @@ public class PongWorld implements IWorld {
 	 * such as player or ball movement, or the game ending
 	 */
 	public IWorld update() { 
+		// sets the value of the width of the window
+		int width = 800;
 		if (this.ball.hitPaddleLeft(this.paddleLeft) && this.ball.getSpeed().getX() < 0) {
 			return new PongWorld(this.paddleLeft.move(), this.paddleRight.move(), this.ball.ballBounce(), this.leftScore.addToLeft(ball, paddleLeft), this.rightScore);
 		} else if (this.ball.hitPaddleRight(this.paddleRight) && this.ball.getSpeed().getX() > 0 ) {
 			return new PongWorld(this.paddleLeft.move(), this.paddleRight.move(), this.ball.ballBounce(), this.leftScore, this.rightScore.addToRight(ball, paddleRight));
-		} else if (this.ball.getLoc().getX() > 800 || this.ball.getLoc().getX() < 0) {
+		} else if (this.ball.getLoc().getX() > width || this.ball.getLoc().getX() < 0) {
 			
-			//sb.recordAScore(leftScore);
-			//sb.recordAScore(rightScore);
-			//sb.saveToFile();
+			sb.recordAScore(leftScore);
+			sb.recordAScore(rightScore);
+			sb.saveToFile();
 			
 			// return new ResetWorld();
 			return new ResetWorld();
@@ -73,21 +77,25 @@ public class PongWorld implements IWorld {
 	 * returns a new PongWorld where the paddles have moved based on which key has been pressed
 	 */
 	public PongWorld keyPressed(KeyEvent kev) {
+		
+		int paddlespeeddown = -10;
+		int paddlespeedup = 10; 
+		int diameter = 20; 
 		if (kev.getKeyCode() == PApplet.UP) {
-			return new PongWorld(this.paddleLeft, this.paddleRight.updateMove(-10), this.ball, this.leftScore, this.rightScore);
+			return new PongWorld(this.paddleLeft, this.paddleRight.updateMove(paddlespeeddown), this.ball, this.leftScore, this.rightScore);
 		}
 		if (kev.getKeyCode() == PApplet.DOWN) {
-			return new PongWorld(this.paddleLeft, this.paddleRight.updateMove(+10), this.ball, this.leftScore, this.rightScore);
+			return new PongWorld(this.paddleLeft, this.paddleRight.updateMove(paddlespeedup), this.ball, this.leftScore, this.rightScore);
 		}
 		if (kev.getKey() == 'w') {
-			return new PongWorld(this.paddleLeft.updateMove(-10), this.paddleRight, this.ball, this.leftScore, this.rightScore);
+			return new PongWorld(this.paddleLeft.updateMove(paddlespeeddown), this.paddleRight, this.ball, this.leftScore, this.rightScore);
 		}
 		if (kev.getKey() == 's') {
-			return new PongWorld(this.paddleLeft.updateMove(10), this.paddleRight, this.ball, this.leftScore, this.rightScore);
+			return new PongWorld(this.paddleLeft.updateMove(paddlespeedup), this.paddleRight, this.ball, this.leftScore, this.rightScore);
 		}
 		if (kev.getKey() == ' ') {
 			
-			return new PongWorld(this.paddleLeft, this.paddleRight, new Ball( new Posn(400, 300), 20, new Posn (-5, 5)), this.leftScore, this.rightScore); 
+			return new PongWorld(this.paddleLeft, this.paddleRight, new Ball( new Posn(400, 300), diameter, new Posn (-5, 5)), this.leftScore, this.rightScore); 
 		}
 		else return this;
 	}
@@ -97,17 +105,19 @@ public class PongWorld implements IWorld {
 	 * this allows for smoother player movement
 	 */
 	public PongWorld keyReleased(KeyEvent kev) {
+		int paddlespeeddown = -10;
+		int paddlespeedup = 10; 
 		if (kev.getKeyCode() == PApplet.UP) {
-			return new PongWorld(this.paddleLeft, this.paddleRight.updateMove(10), this.ball, this.leftScore, this.rightScore);
+			return new PongWorld(this.paddleLeft, this.paddleRight.updateMove(paddlespeedup), this.ball, this.leftScore, this.rightScore);
 		}
 		if (kev.getKeyCode() == PApplet.DOWN) {
-			return new PongWorld(this.paddleLeft, this.paddleRight.updateMove(-10), this.ball, this.leftScore, this.rightScore);
+			return new PongWorld(this.paddleLeft, this.paddleRight.updateMove(paddlespeeddown), this.ball, this.leftScore, this.rightScore);
 		}
 		if (kev.getKey() == 'w') {
-			return new PongWorld(this.paddleLeft.updateMove(10), this.paddleRight, this.ball, this.leftScore, this.rightScore);
+			return new PongWorld(this.paddleLeft.updateMove(paddlespeedup), this.paddleRight, this.ball, this.leftScore, this.rightScore);
 		}
 		if (kev.getKey() == 's') {
-			return new PongWorld(this.paddleLeft.updateMove(-10), this.paddleRight, this.ball, this.leftScore, this.rightScore);
+			return new PongWorld(this.paddleLeft.updateMove(paddlespeeddown), this.paddleRight, this.ball, this.leftScore, this.rightScore);
 		}
 		else return this;
 	}
