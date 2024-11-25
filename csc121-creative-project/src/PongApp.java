@@ -4,22 +4,16 @@ import processing.event.*;
 /**
  * Provides the scaffolding to launch a Processing application
  */
-public class PongApp extends PApplet {	// <----- 1. rename AppTemplate everywhere in this file
+public class PongApp extends PApplet {
     IWorld w;
-    
-   // Size of the window of the game
     
     public void settings() {
         this.size(800, 600);
     }
-    
-    // Starts the new world 
-    
+     
     public void setup() {
     	w = new StartWorld();
     }
-    
-    // Draws the news world
     
     public void draw() {
         w = w.update();

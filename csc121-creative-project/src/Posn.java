@@ -1,3 +1,5 @@
+/* @author Trevor Childers and Jacob Bridges */
+
 import java.util.Objects;
 
 /** 
@@ -7,6 +9,7 @@ class Posn {
 	private int x;
 	private int y;
 
+	// constructor
 	Posn(int x, int y) {
 		this.x = x;
 		this.y = y;
@@ -31,6 +34,7 @@ class Posn {
 		return new Posn( this.x + offset.x, this.y + offset.y );
 	}
 
+	/* hash code and equals methods */
 	@Override
 	public int hashCode() {
 		return Objects.hash(x, y);
@@ -48,6 +52,7 @@ class Posn {
 		return x == other.x && y == other.y;
 	}
 
+	/* to string method */
 	@Override
 	public String toString() {
 		return "Posn [x=" + x + ", y=" + y + "]";

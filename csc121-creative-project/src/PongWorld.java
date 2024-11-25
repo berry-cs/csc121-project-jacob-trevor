@@ -2,7 +2,6 @@
  * @author Trevor Childers and Jacob Bridges 
  */
 
-import java.util.ArrayList;
 import java.util.Objects;
 import processing.core.PApplet;
 import processing.event.KeyEvent;
@@ -12,15 +11,16 @@ import processing.event.KeyEvent;
  */
 public class PongWorld implements IWorld {
 
-	private Paddle paddleLeft;
-	private Paddle paddleRight;
-	private Ball ball;
+	private Paddle paddleLeft;  // the left players paddle
+	private Paddle paddleRight; // the right players paddle
+	private Ball ball;  // the ball within this pong world
 	
-	private ScoreData leftScore;
-	private ScoreData rightScore;
+	private ScoreData leftScore; // the left players score
+	private ScoreData rightScore; // the right players score
 	
-	private ScoreBoard sb;
+	private ScoreBoard sb; // the overall games score board
 
+	// constructor
 	PongWorld(Paddle paddleLeft, Paddle paddleRight, Ball ball, ScoreData leftScore, ScoreData rightScore, ScoreBoard sb) {
 		super();
 		this.paddleLeft = paddleLeft;
@@ -28,7 +28,7 @@ public class PongWorld implements IWorld {
 		this.ball = ball;
 		this.leftScore = leftScore;
 		this.rightScore = rightScore;
-		this.sb = new ScoreBoard(new ArrayList<ScoreData>());
+		this.sb = new ScoreBoard();
 	}
 
 	/*
@@ -54,19 +54,21 @@ public class PongWorld implements IWorld {
 	 * such as player or ball movement, or the game ending
 	 */
 	public IWorld update() { 
-		// sets the value of the width of the window
-		int width = 800;
+	
+		int width = 800; // represents the value of the width of the window
+		
 		if (this.ball.hitPaddleLeft(this.paddleLeft) && this.ball.getSpeed().getX() < 0) {
 			return new PongWorld(this.paddleLeft.move(), this.paddleRight.move(), this.ball.ballBounce(), this.leftScore.addToLeft(ball, paddleLeft), this.rightScore, this.sb);
 		} else if (this.ball.hitPaddleRight(this.paddleRight) && this.ball.getSpeed().getX() > 0 ) {
 			return new PongWorld(this.paddleLeft.move(), this.paddleRight.move(), this.ball.ballBounce(), this.leftScore, this.rightScore.addToRight(ball, paddleRight), this.sb);
 		} else if (this.ball.getLoc().getX() > width || this.ball.getLoc().getX() < 0) {
 			
+			/* if the game ends, both of the scores
+			 * are recorded and then saved to the output file 
+			 */
 			sb.recordAScore(leftScore);
 			sb.recordAScore(rightScore);
 			sb.saveToFile();
-			
-			// return new ResetWorld();
 			return new ResetWorld();
 		} else {
 			return new PongWorld(this.paddleLeft.move(), this.paddleRight.move(), this.ball.ballMove(), this.leftScore, this.rightScore, this.sb);
@@ -81,6 +83,7 @@ public class PongWorld implements IWorld {
 		int paddlespeeddown = -10;
 		int paddlespeedup = 10; 
 		int diameter = 20; 
+		
 		if (kev.getKeyCode() == PApplet.UP) {
 			return new PongWorld(this.paddleLeft, this.paddleRight.updateMove(paddlespeeddown), this.ball, this.leftScore, this.rightScore, this.sb);
 		}
@@ -105,8 +108,10 @@ public class PongWorld implements IWorld {
 	 * this allows for smoother player movement
 	 */
 	public PongWorld keyReleased(KeyEvent kev) {
+		
 		int paddlespeeddown = -10;
 		int paddlespeedup = 10; 
+		
 		if (kev.getKeyCode() == PApplet.UP) {
 			return new PongWorld(this.paddleLeft, this.paddleRight.updateMove(paddlespeedup), this.ball, this.leftScore, this.rightScore, this.sb);
 		}
@@ -122,23 +127,7 @@ public class PongWorld implements IWorld {
 		else return this;
 	}
 	
-//	/*
-//	 * writes the score data from this game to an output file
-//	 */
-//	public void saveScore() {
-//
-//		try {
-//			PrintWriter pw = new PrintWriter(new File("output.txt"));
-//
-//			this.leftScore.writeToFile(pw);
-//			this.rightScore.writeToFile(pw);
-//
-//			pw.close();
-//		} catch (IOException exp) {
-//			System.out.println("Problem Saving Score: " + exp.getMessage());
-//		}
-//	}
-
+	/* hash code and equals methods */
 	@Override
 	public int hashCode() {
 		return Objects.hash(ball, leftScore, paddleLeft, paddleRight, rightScore, sb);
@@ -158,6 +147,7 @@ public class PongWorld implements IWorld {
 				&& Objects.equals(rightScore, other.rightScore) && Objects.equals(sb, other.sb);
 	}
 
+	/* to string method */
 	@Override
 	public String toString() {
 		return "PongWorld [paddleLeft=" + paddleLeft + ", paddleRight=" + paddleRight + ", ball=" + ball

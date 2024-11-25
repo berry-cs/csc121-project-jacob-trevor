@@ -1,7 +1,4 @@
-
-/*
- * represents the paddle on the left side of the screen
- */
+/* @author Trevor Childers and Jacob Bridges */
 
 import java.util.Objects;
 
@@ -11,10 +8,11 @@ public class Paddle  {
 	private int height;
 	private int width;
 	
-	int move;  // represents the speed of this paddle
+	int move;  // represents the movement speed of this paddle
 	
 	public static final int MAX_MOVEMENT = 10; // sets a value for the move speed of the paddles
 
+	// constructor
 	public Paddle(int x, int y, int width, int height) {
 		this.x = x;
 		this.y = y;

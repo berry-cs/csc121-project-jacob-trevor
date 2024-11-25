@@ -38,21 +38,24 @@ class PongWorldTest {
 	// score examples
 	ScoreData leftScore = new ScoreData("Trevor", 0);
 	ScoreData rightScore = new ScoreData("Jacob", 0);
+	
+	// score board example
+	ScoreBoard sb = new ScoreBoard();
 
 	// world examples
-	PongWorld w1 = new PongWorld(paddleLeft, paddleRight, b1, leftScore, rightScore);
-	PongWorld w2 = new PongWorld(paddleLeft, paddleRight, b5, leftScore, rightScore);
-	PongWorld w3 = new PongWorld(paddleLeft, paddleRight, b3, leftScore, rightScore);
-	PongWorld w4 = new PongWorld(paddleLeft, paddleRight, b10, leftScore, rightScore);
-	PongWorld w5 = new PongWorld(paddleLeft, paddleRight, b12, leftScore, rightScore);
-	PongWorld w6 = new PongWorld(paddleLeft, paddleRight, b14, leftScore, rightScore);
+	PongWorld w1 = new PongWorld(paddleLeft, paddleRight, b1, leftScore, rightScore, sb);
+	PongWorld w2 = new PongWorld(paddleLeft, paddleRight, b5, leftScore, rightScore, sb);
+	PongWorld w3 = new PongWorld(paddleLeft, paddleRight, b3, leftScore, rightScore, sb);
+	PongWorld w4 = new PongWorld(paddleLeft, paddleRight, b10, leftScore, rightScore, sb);
+	PongWorld w5 = new PongWorld(paddleLeft, paddleRight, b12, leftScore, rightScore, sb);
+	PongWorld w6 = new PongWorld(paddleLeft, paddleRight, b14, leftScore, rightScore, sb);
 
 	// updated worlds examples
-	PongWorld w1UpdatedPaddleRightUP = new PongWorld(paddleLeft, paddleRightUpdateUp, b1, leftScore, rightScore);
-	PongWorld w1UpdatedPaddleRightDown = new PongWorld(paddleLeft, paddleRightUpdateDown, b1, leftScore, rightScore);
-	PongWorld w1UpdatedPaddleLeftDown = new PongWorld(paddleLeftUpdateDown, paddleRight, b1, leftScore, rightScore);
-	PongWorld w1UpdatedPaddleLeftUp = new PongWorld(paddleLeftUpdateUp, paddleRight, b1, leftScore, rightScore);
-	PongWorld w3UpdatedBall = new PongWorld(paddleLeft, paddleRight, b4, leftScore, rightScore);
+	PongWorld w1UpdatedPaddleRightUP = new PongWorld(paddleLeft, paddleRightUpdateUp, b1, leftScore, rightScore, sb);
+	PongWorld w1UpdatedPaddleRightDown = new PongWorld(paddleLeft, paddleRightUpdateDown, b1, leftScore, rightScore, sb);
+	PongWorld w1UpdatedPaddleLeftDown = new PongWorld(paddleLeftUpdateDown, paddleRight, b1, leftScore, rightScore, sb);
+	PongWorld w1UpdatedPaddleLeftUp = new PongWorld(paddleLeftUpdateUp, paddleRight, b1, leftScore, rightScore, sb);
+	PongWorld w3UpdatedBall = new PongWorld(paddleLeft, paddleRight, b4, leftScore, rightScore, sb);
 
 	// Posn examples
 	Posn p1 = new Posn(5, 5);
@@ -76,10 +79,10 @@ class PongWorldTest {
 
 	@Test
 	void testupdate() {
-		assertEquals(new PongWorld(paddleLeft, paddleRight, new Ball(new Posn(105, 205), 10, new Posn(5,5)), leftScore, rightScore), w3.update());
-		assertEquals(new PongWorld(paddleLeft, paddleRight, new Ball(new Posn(5, 226), 10, new Posn(1, 5)), new ScoreData("Trevor", 1), new ScoreData("Jacob", 0)), w4.update());  // ball bouncing off left paddle
-		assertEquals(new PongWorld(paddleLeft, paddleRight, new Ball(new Posn(770, 226), 10, new Posn(-5, 10)), new ScoreData("Trevor", 0), new ScoreData("Jacob", 1)), w5.update());  // ball bouncing off Right paddle
-		assertEquals(new PongWorld(paddleLeft, paddleRight, new Ball(new Posn(770, 370), 10, new Posn(-5, 0)), new ScoreData("Trevor", 0), new ScoreData("Jacob", 1)), w6.update());
+		assertEquals(new PongWorld(paddleLeft, paddleRight, new Ball(new Posn(105, 205), 10, new Posn(5,5)), leftScore, rightScore, sb), w3.update());
+		assertEquals(new PongWorld(paddleLeft, paddleRight, new Ball(new Posn(5, 226), 10, new Posn(1, 5)), new ScoreData("Trevor", 1), new ScoreData("Jacob", 0), sb), w4.update());  // ball bouncing off left paddle
+		assertEquals(new PongWorld(paddleLeft, paddleRight, new Ball(new Posn(770, 226), 10, new Posn(-5, 10)), new ScoreData("Trevor", 0), new ScoreData("Jacob", 1), sb), w5.update());  // ball bouncing off Right paddle
+		assertEquals(new PongWorld(paddleLeft, paddleRight, new Ball(new Posn(770, 370), 10, new Posn(-5, 0)), new ScoreData("Trevor", 0), new ScoreData("Jacob", 1), sb), w6.update());
 		
 	}
 

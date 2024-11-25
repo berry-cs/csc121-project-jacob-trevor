@@ -1,8 +1,8 @@
+/* @author Trevor Childers and Jacob Bridges */
+
 import java.io.PrintWriter;
 import java.util.Objects;
 import java.util.Scanner;
-
-import processing.core.PApplet;
 
 /*
  * represents a players score within this pong world
@@ -10,19 +10,20 @@ import processing.core.PApplet;
 public class ScoreData {
 	private String name;
 	private int score;
-	private final static int STARTING_VALUE = 0;
+	private final static int STARTING_VALUE = 0; // represents the starting value of each players score at the beginning of the game
 	
 	public ScoreData(String name, int score) {
-		super();
 		this.name = name;
 		this.score = score;
 	}
 	
+	/* overloaded constructor so that new score data can be created
+	 * by reading information in from an output file
+	 */
 	public ScoreData (Scanner sc) { 
 		this.score = sc.nextInt(); 
-		this.name =sc.nextLine().trim(); 
+		this.name = sc.nextLine().trim(); 
 	}
-	
 	
 	/*
 	 * if the ball hits the left players paddle, add one to the left players score
@@ -72,10 +73,6 @@ public class ScoreData {
 		return STARTING_VALUE;
 	}
 	
-	
-
-	
-	
 	/*
 	 * hash code and equals methods
 	 */
@@ -103,10 +100,4 @@ public class ScoreData {
 	public String toString() {
 		return "ScoreData [name=" + name + ", score=" + score + "]";
 	}
-
-	public void draw(PApplet w) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 }
